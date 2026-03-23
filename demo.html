@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Growth Systems — Live Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+html,body{height:100%;overflow-x:hidden;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative}
+.sc{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--sp)}
+:root{
+  --t1:clamp(2rem,5vw,4.2rem);--t2:clamp(1.4rem,3.2vw,2.6rem);--t3:clamp(1rem,2vw,1.4rem);
+  --body:clamp(0.78rem,1.3vw,1rem);--sm:clamp(0.65rem,1vw,0.82rem);
+  --sp:clamp(2rem,5vw,5rem);--gap:clamp(0.5rem,2vw,1.5rem);
+  --bg:#08080a;--sf:#0f0f12;--bd:rgba(255,255,255,.06);
+  --gold:#c9a96e;--gd:rgba(201,169,110,.12);--gg:rgba(201,169,110,.04);
+  --w:#f5f5f5;--tx:#b0b0b0;--mt:#666;--dm:#3a3a3a;
+  --grn:#4ade80;--red:#f87171;--blu:#60a5fa;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased}
+.bar{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:1000;transition:width .4s}
+.cnt{position:fixed;bottom:20px;right:28px;font-size:11px;color:var(--dm);z-index:100;font-weight:500;letter-spacing:1px}
+.g{color:var(--gold)}.w{color:var(--w)}.ctr{text-align:center}.mx{margin:0 auto}
+h1{font-size:var(--t1);font-weight:900;color:var(--w);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:var(--t2);font-weight:700;color:var(--w);line-height:1.15;letter-spacing:-.01em}
+h3{font-size:var(--t3);font-weight:600;color:var(--w);line-height:1.3}
+p,.bd{font-size:var(--body);line-height:1.6}
+.lb{font-size:var(--sm);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.rv.v{opacity:1;transform:none}
+.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+.geo{position:absolute;border-radius:50%;opacity:.03;pointer-events:none}
+.g1{width:500px;height:500px;background:var(--gold);top:-200px;right:-150px}
+.g2{width:300px;height:300px;background:var(--gold);bottom:-100px;left:-100px}
+
+/* TWO COL */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,44px);align-items:start;max-width:940px;width:100%}
+@media(max-width:768px){.two{grid-template-columns:1fr}}
+
+/* STEPS */
+.st{list-style:none;padding:0;margin:0;counter-reset:s}
+.st li{counter-increment:s;display:flex;gap:clamp(8px,1.2vw,14px);padding:clamp(6px,.8vh,11px) 0;border-bottom:1px solid var(--bd);font-size:var(--body);line-height:1.5}
+.st li:last-child{border-bottom:none}
+.st li::before{content:counter(s);min-width:24px;height:24px;border-radius:6px;background:var(--gd);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--gold);flex-shrink:0}
+
+/* LINK PILL */
+.lk{display:inline-flex;align-items:center;gap:5px;margin-top:4px;padding:3px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:5px;font-size:10px;color:var(--gold);font-weight:500;text-decoration:none;transition:all .15s}
+.lk:hover{border-color:var(--gold);background:var(--gd);text-decoration:none}
+.dt{width:5px;height:5px;border-radius:50%;background:var(--grn)}
+
+/* MONEY BOX */
+.money{background:linear-gradient(135deg,rgba(74,222,128,.06),rgba(74,222,128,.02));border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:14px 18px;margin-top:12px}
+.money .mh{font-size:var(--sm);font-weight:700;color:var(--grn);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.money p,.money li{font-size:var(--body);line-height:1.5}
+.money ul{padding-left:16px;margin:0}
+
+/* SELL BOX */
+.sell{background:linear-gradient(135deg,rgba(201,169,110,.06),rgba(201,169,110,.02));border:1px solid rgba(201,169,110,.18);border-radius:8px;padding:14px 18px;margin-top:12px}
+.sell .sh{font-size:var(--sm);font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.sell p,.sell li{font-size:var(--body);line-height:1.5}
+.sell ul{padding-left:16px;margin:0}
+
+/* METRICS */
+.mr{display:flex;gap:clamp(16px,3vw,32px);flex-wrap:wrap;margin-top:clamp(12px,2vh,20px)}
+.mi .n{font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:800;color:var(--gold);line-height:1}
+.mi .ml{font-size:var(--sm);color:var(--mt);margin-top:2px}
+
+/* 9-GRID */
+.ng{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.5vw,14px);max-width:900px;width:100%}
+@media(max-width:600px){.ng{grid-template-columns:repeat(2,1fr)}}
+.nc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:clamp(12px,1.5vw,18px);position:relative;overflow:hidden}
+.nc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent 80%)}
+.nc h3{font-size:clamp(.85rem,1.5vw,1.05rem);margin:0 0 3px}
+.nc p{font-size:var(--sm);color:var(--mt);margin:0;line-height:1.4}
+.tg{display:inline-block;padding:2px 7px;border-radius:5px;font-size:8px;font-weight:700;letter-spacing:1px;margin-bottom:6px;background:rgba(74,222,128,.1);color:var(--grn);border:1px solid rgba(74,222,128,.2)}
+
+/* PRICING */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,2vw,16px);max-width:820px}
+@media(max-width:700px){.pg{grid-template-columns:1fr}}
+.pk{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:clamp(16px,2.5vw,24px)}
+.pk.pop{border-color:var(--gold);box-shadow:0 0 30px var(--gg)}
+.pk h3{font-size:clamp(.95rem,1.8vw,1.2rem);margin:0 0 2px}
+.pk .pp{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--gold);margin:6px 0 2px}
+.pk .pp span{font-size:var(--body);font-weight:400;color:var(--mt)}
+.pk .rc{font-size:var(--sm);color:var(--mt);margin-bottom:10px}
+.pk ul{list-style:none;padding:0;margin:0}
+.pk li{font-size:var(--sm);color:var(--tx);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+
+/* ROI */
+.rt{width:100%;max-width:780px;border-collapse:collapse}
+.rt th{text-align:left;font-size:var(--sm);font-weight:600;color:var(--mt);text-transform:uppercase;letter-spacing:1px;padding:6px 10px;border-bottom:1px solid var(--bd)}
+.rt td{font-size:var(--body);padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.03)}
+.rt .sv{color:var(--grn);font-weight:600}
+.rt tr.tot td{background:var(--gd);font-weight:700}
+
+@media(max-height:700px){:root{--sp:clamp(1rem,3.5vw,2.5rem);--t1:clamp(1.5rem,4vw,2.8rem);--t2:clamp(1.1rem,2.8vw,1.8rem)}.st li{padding:clamp(4px,.6vh,8px) 0}}
+</style>
+</head>
+<body>
+<div class="bar" id="bar"></div>
+<div class="cnt" id="cnt"></div>
+
+<!-- ===== 1. TITLE ===== -->
+<section class="slide" style="align-items:center;justify-content:center">
+<div class="geo g1"></div><div class="geo g2"></div>
+<div class="sc ctr" style="max-width:780px">
+  <p class="lb rv">Live Systems. Real Revenue.</p>
+  <h1 class="rv d1" style="margin:14px 0">AI That Runs<br>Your Business <span class="g">For You</span></h1>
+  <p class="rv d2" style="font-size:clamp(1rem,1.6vw,1.15rem);color:var(--mt);max-width:540px;margin:0 auto">9 systems. All live. Each one replaces a salary.<br>Total run cost: $447/month.</p>
+  <div class="mr rv d3" style="justify-content:center;margin-top:clamp(20px,3vh,36px)">
+    <div class="mi ctr"><div class="n">$85K+</div><div class="ml">Salaries replaced / mo</div></div>
+    <div class="mi ctr"><div class="n">$447</div><div class="ml">AI run cost / mo</div></div>
+    <div class="mi ctr"><div class="n">14 days</div><div class="ml">To deploy for a client</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 2. THE 9 SYSTEMS ===== -->
+<section class="slide">
+<div class="sc ctr mx">
+  <p class="lb rv">What's Running Right Now</p>
+  <h2 class="rv d1" style="margin:10px 0 20px">9 Systems. All Live. Each One Sells.</h2>
+  <div class="ng rv d2 mx">
+    <div class="nc"><span class="tg">LIVE</span><h3>AI Receptionist</h3><p>Answers every call. Books appointments. 24/7.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>AI Sales Closer</h3><p>Outbound calls. Handles objections. Closes deals.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>SEO Lead Machine</h3><p>Audits sites. Sends outreach. Collects payment.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>Content Engine</h3><p>1 video in. 10+ pieces out. Auto-posted.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>AI Influencers</h3><p>Fake people. Real followers. Sell products.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>Lead Gen Pipeline</h3><p>Scrape. Verify. Email. Book calls.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>24/7 Engagement</h3><p>CRM. Nurture. Follow-up. Nothing drops.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>OpenClaw API</h3><p>One API. Every bot talks to every service.</p></div>
+    <div class="nc"><span class="tg">LIVE</span><h3>JARVIS OS</h3><p>13 bots. Daily briefings. Full COO.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 3. AI RECEPTIONIST ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">System 1</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">AI Receptionist</h2>
+      <p class="rv d2 bd">Your phone rings. AI picks up before the first ring finishes. Has a real conversation. Books the appointment. Updates your CRM. You never touched it.</p>
+      <a class="lk rv d2" href="tel:+15129670954"><span class="dt"></span>Call it now: +1 (512) 967-0954</a>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li>Sell as standalone: <strong>$2,500 setup + $500/mo</strong></li>
+          <li>Every missed call = $200-2,000 lost. This catches all of them.</li>
+          <li>Dentist answering 10 extra calls/mo = $20K+ revenue they were leaving on the table.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ol class="st rv d2">
+        <li>Customer calls your number — AI answers in under 1 second</li>
+        <li>Natural conversation. Qualifies the caller. Answers their questions.</li>
+        <li>Books appointment straight into your calendar</li>
+        <li>CRM updated — new contact, tags, pipeline stage</li>
+        <li>Instant Telegram alert with transcript + lead score</li>
+        <li>No-answer? Follow-up assistant calls them back automatically</li>
+      </ol>
+      <div class="mr rv d3">
+        <div class="mi"><div class="n">$70/mo</div><div class="ml">Run cost</div></div>
+        <div class="mi"><div class="n">$5K/mo</div><div class="ml">Replaces</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 4. AI SALES CLOSER ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">System 2</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">AI Sales Closer</h2>
+      <p class="rv d2 bd">Lead comes in. AI calls them within 5 minutes. Uses your voice clone. Runs your sales script. Handles objections. Books the appointment or closes the deal. No humans needed.</p>
+      <a class="lk rv d2" href="tel:+15129670954"><span class="dt"></span>Live demo: +1 (512) 967-0954</a>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li>Sell per vertical: legal, real estate, insurance, coaching</li>
+          <li><strong>$10,000 setup + $2,000/mo</strong> per client</li>
+          <li>Speed-to-lead is everything. 5 min vs 5 hours = 10x close rate.</li>
+          <li>One client closing 10 extra deals/mo = $20-100K revenue.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ol class="st rv d2">
+        <li>Lead enters from any source — form, email, scraper, import</li>
+        <li>AI calls within minutes. Your voice. Natural opener.</li>
+        <li>Full sales script with dynamic objection handling</li>
+        <li>Qualified? Booked into calendar automatically.</li>
+        <li>Not home? Callback scheduled. 3 attempts over 48 hours.</li>
+        <li>Every outcome logged — transcript, score, next action</li>
+        <li>3 assistants: Inbound / Outbound / Follow-Up. Same voice.</li>
+      </ol>
+      <div class="mr rv d3">
+        <div class="mi"><div class="n">$150/mo</div><div class="ml">Run cost</div></div>
+        <div class="mi"><div class="n">$8K/mo</div><div class="ml">Replaces</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 5. CASHCLAW SEO MACHINE ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">System 3</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">SEO Lead Machine</h2>
+      <p class="rv d2 bd">Find a business. Audit their website. Send them an email with their actual broken SEO. They reply. You send the report. They pay $497. The whole thing runs itself.</p>
+      <a class="lk rv d2" href="https://free-seo-audit-6uc.pages.dev" target="_blank"><span class="dt"></span>Try the live audit tool</a>
+      <a class="lk rv d2" href="https://seo-audit-api.dylanewing.workers.dev" target="_blank"><span class="dt"></span>Audit API endpoint</a>
+      <a class="lk rv d3" href="https://buy.stripe.com/3cIbJ25Ok6LjeQQ9j2eQM27" target="_blank"><span class="dt"></span>Stripe: $497 fix package</a>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li><strong>$497 per fix</strong> — 90% margin (costs $0.10 in API fees)</li>
+          <li>$297/mo ongoing optimization</li>
+          <li>$1,497 premium package</li>
+          <li>White-label the tool to agencies for monthly SaaS revenue</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ol class="st rv d2">
+        <li>Scraper finds targets — Google Maps, gov databases, directories</li>
+        <li>Cloudflare Worker runs 15-point SEO audit in 3 seconds</li>
+        <li>Professional HTML report generated with their specific scores</li>
+        <li>Personalized email sent from your domain — references THEIR problems</li>
+        <li>Reply hits Telegram. One click sends the full report.</li>
+        <li>Stripe payment link in the report — they buy on the spot</li>
+        <li>Follow-up sequence runs for non-responders</li>
+      </ol>
+      <div class="mr rv d3">
+        <div class="mi"><div class="n">$20/mo</div><div class="ml">Run cost</div></div>
+        <div class="mi"><div class="n">$497</div><div class="ml">Per sale</div></div>
+        <div class="mi"><div class="n">117</div><div class="ml">Leads in pipeline</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 6. CONTENT ENGINE ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">System 4</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">Content Engine</h2>
+      <p class="rv d2 bd">Record one 5-minute video. The system turns it into 10+ pieces — reels, carousels, stories — each sized for its platform. Captions in your voice. Nothing posts without your approval.</p>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li>Sell to any business owner who knows they should post but doesn't</li>
+          <li><strong>$10,000 setup + $2,000/mo</strong></li>
+          <li>Replaces $8-15K/mo content team or agency retainer</li>
+          <li>One sale pays for your setup. Every month after is profit.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ol class="st rv d2">
+        <li>Drop one raw video or photo into the system</li>
+        <li>AI splits it into 10+ platform-optimized pieces</li>
+        <li>Caption generator writes copy in your exact brand voice</li>
+        <li>30-day content calendar auto-generated</li>
+        <li>Telegram approval gate — tap to approve each piece</li>
+        <li>Auto-posts to IG, TikTok, LinkedIn, Facebook, YouTube</li>
+        <li>Monthly report shows what's working. Strategy adjusts.</li>
+      </ol>
+      <div class="mr rv d3">
+        <div class="mi"><div class="n">$35/mo</div><div class="ml">Run cost</div></div>
+        <div class="mi"><div class="n">$15K/mo</div><div class="ml">Replaces</div></div>
+        <div class="mi"><div class="n">10x</div><div class="ml">Output per input</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 7. AI INFLUENCERS ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">System 5</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">AI Influencers</h2>
+      <p class="rv d2 bd">AI-generated people with consistent faces, unique voices, and real audiences. They post every day. They sell products. Aitana Lopez makes $30K/mo. Lil Miquela earns $40K/mo. This is happening everywhere. We build it.</p>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li>Affiliate links. Brand deals. Product promotion. Funnel traffic.</li>
+          <li>$0.15 per post vs $5-50K per real influencer post</li>
+          <li>Sell to business owners: <strong>$10,000 setup + $2,000/mo</strong></li>
+          <li>Each persona is its own revenue channel. Add more = more money.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ol class="st rv d2">
+        <li>Design the persona — face, voice, brand, personality, content pillars</li>
+        <li>Generate face-consistent images across scenes and outfits</li>
+        <li>Clone a unique voice for each persona</li>
+        <li>AI writes captions and scripts in their specific voice</li>
+        <li>Video pipeline: $0.15-0.35 per Reel</li>
+        <li>Daily posts across IG, TikTok, YouTube</li>
+        <li>Scale: add a new persona in hours. Each one builds its own audience.</li>
+      </ol>
+      <div class="mr rv d3">
+        <div class="mi"><div class="n">$50/mo</div><div class="ml">Run cost</div></div>
+        <div class="mi"><div class="n">$20K/mo</div><div class="ml">Replaces</div></div>
+        <div class="mi"><div class="n">3</div><div class="ml">Personas built</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 8. LEAD GEN PIPELINE ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">System 6</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">Lead Gen Pipeline</h2>
+      <p class="rv d2 bd">Scrapes leads from government databases, Google Maps, and industry directories. Verifies every email. Pushes to cold email campaigns with proven copy. Replies forwarded to Telegram. From stranger to booked call.</p>
+      <a class="lk rv d2" href="https://lina-verifier.dylanewing.workers.dev" target="_blank"><span class="dt"></span>Email verifier (Cloudflare)</a>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li>Feed leads into any of the other systems</li>
+          <li>Sell as done-for-you lead gen: <strong>$5,000 setup + $1,000/mo</strong></li>
+          <li>161K+ state-verified leads already in the database</li>
+          <li>White Paper campaign: book calls by positioning as researcher</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ol class="st rv d2">
+        <li>Define target: industry, location, size, job title</li>
+        <li>Multi-source scraper pulls leads — gov DBs, Maps, directories</li>
+        <li>10-point email verification via Cloudflare Worker. No bounces.</li>
+        <li>Leads pushed to cold email campaigns — 7 variants each</li>
+        <li>Replies auto-detected. Forwarded to Telegram with context.</li>
+        <li>Interested leads booked or handed to AI Sales Closer</li>
+        <li>Campaign analytics: opens, replies, bookings — all tracked</li>
+      </ol>
+      <div class="mr rv d3">
+        <div class="mi"><div class="n">$67/mo</div><div class="ml">Run cost</div></div>
+        <div class="mi"><div class="n">161K+</div><div class="ml">Leads ready</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 9. 24/7 ENGAGEMENT + OPENCLAW + JARVIS ===== -->
+<section class="slide">
+<div class="sc mx" style="max-width:940px">
+  <div class="two">
+    <div>
+      <p class="lb rv">Systems 7-9</p>
+      <h2 class="rv d1" style="margin:6px 0 10px">The Operating Layer</h2>
+      <p class="rv d2 bd">CRM tracks every lead. Nurture sequences run for 30 days. Bots monitor for dropped leads. OpenClaw connects everything — one API that lets every bot act on every service. JARVIS coordinates all 13 agents.</p>
+      <a class="lk rv d2" href="https://dazzling-generosity-production.up.railway.app/openclaw/status" target="_blank"><span class="dt"></span>OpenClaw API status</a>
+      <a class="lk rv d2" href="https://thedylanewing.com" target="_blank"><span class="dt"></span>Freedom Code funnel (live)</a>
+      <div class="sell rv d3">
+        <div class="sh">What Clients Get</div>
+        <ul>
+          <li>2,273 contacts tracked in CRM right now</li>
+          <li>41 email templates ready — nurture, daily program, pattern results</li>
+          <li>14 API actions across GHL, VAPI, Stripe, email, Telegram</li>
+          <li>Daily morning briefing via Telegram</li>
+          <li>13 AI agents each with defined roles and SOPs</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3 class="rv d1" style="margin-bottom:8px">OpenClaw: 14 Actions</h3>
+      <ol class="st rv d2">
+        <li>Search, create, update CRM contacts + deals</li>
+        <li>Fire outbound AI calls + pull call logs</li>
+        <li>Check Stripe balance, transactions, subscriptions</li>
+        <li>Create payment links + send invoices</li>
+        <li>Check email campaign status</li>
+        <li>Message you from any bot via Telegram</li>
+      </ol>
+      <div class="money rv d3">
+        <div class="mh">How It Makes Money</div>
+        <ul>
+          <li>This is the <strong>$25,000 Enterprise package</strong></li>
+          <li>Client gets their own JARVIS instance. Own bots. Own APIs.</li>
+          <li>$5,000/mo managed. You keep the client for life.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 10. ROI TABLE ===== -->
+<section class="slide">
+<div class="sc ctr mx" style="max-width:820px">
+  <p class="lb rv">The Math</p>
+  <h2 class="rv d1" style="margin:10px 0 16px">All 9 Systems Cost Less Than One Employee</h2>
+  <table class="rt rv d2 mx">
+    <thead><tr><th>System</th><th>AI Cost</th><th>Replaces</th><th>You Save</th></tr></thead>
+    <tbody>
+      <tr><td>AI Receptionist</td><td>$70</td><td>$3-5K</td><td class="sv">$4,930/mo</td></tr>
+      <tr><td>AI Sales Closer</td><td>$150</td><td>$4-8K</td><td class="sv">$7,850/mo</td></tr>
+      <tr><td>SEO Lead Machine</td><td>$20</td><td>$5-10K</td><td class="sv">$9,980/mo</td></tr>
+      <tr><td>Content Engine</td><td>$35</td><td>$8-15K</td><td class="sv">$14,965/mo</td></tr>
+      <tr><td>AI Influencers</td><td>$50</td><td>$10-20K</td><td class="sv">$19,950/mo</td></tr>
+      <tr><td>Lead Gen + CRM + OS</td><td>$122</td><td>$15-27K</td><td class="sv">$26,878/mo</td></tr>
+      <tr class="tot"><td>Total</td><td>$447/mo</td><td>$45-85K/mo</td><td class="sv">$84,553/mo</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ===== 11. PRICING ===== -->
+<section class="slide">
+<div class="sc ctr mx">
+  <p class="lb rv">Packages</p>
+  <h2 class="rv d1" style="margin:10px 0 20px">Pick What Fits. Scale When Ready.</h2>
+  <div class="pg rv d2 mx">
+    <div class="pk">
+      <h3>Starter</h3>
+      <div class="pp">$2,500 <span>setup</span></div>
+      <div class="rc">+ $500/month</div>
+      <ul>
+        <li>1 system (your pick)</li>
+        <li>AI Receptionist or Content Engine</li>
+        <li>CRM integration</li>
+        <li>Telegram command center</li>
+        <li>Weekly reports</li>
+      </ul>
+    </div>
+    <div class="pk pop">
+      <h3>Growth</h3>
+      <div class="pp">$10,000 <span>setup</span></div>
+      <div class="rc">+ $2,000/month</div>
+      <ul>
+        <li>Everything in Starter</li>
+        <li>Content + AI Influencers</li>
+        <li>Lead gen pipeline</li>
+        <li>AI Voice Agent</li>
+        <li>Monthly strategy call</li>
+      </ul>
+    </div>
+    <div class="pk">
+      <h3>Enterprise</h3>
+      <div class="pp">$25,000 <span>setup</span></div>
+      <div class="rc">+ $5,000/month</div>
+      <ul>
+        <li>Everything in Growth</li>
+        <li>Full JARVIS OS (13 bots)</li>
+        <li>OpenClaw API layer</li>
+        <li>Custom AI personas</li>
+        <li>White-label ready</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== 12. CLOSE ===== -->
+<section class="slide" style="align-items:center;justify-content:center">
+<div class="geo g1"></div><div class="geo g2"></div>
+<div class="sc ctr" style="max-width:680px">
+  <h1 class="rv">Call the number.<br>Run the audit.<br>It's all <span class="g">live</span>.</h1>
+  <p class="rv d1" style="font-size:clamp(1rem,1.5vw,1.1rem);color:var(--mt);max-width:460px;margin:14px auto 24px">From signed contract to live content in 14 days. Full automation in 30.</p>
+  <p class="rv d2" style="font-size:var(--body);color:var(--gold)">dylan@thedylanewing.com</p>
+  <p class="rv d3" style="font-size:var(--sm);color:var(--dm);margin-top:28px">Elevated AI &middot; 2026</p>
+</div>
+</section>
+
+<script>
+(function(){
+  const S=document.querySelectorAll('.slide'),B=document.getElementById('bar'),C=document.getElementById('cnt'),T=S.length;
+  const O=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.rv').forEach(r=>r.classList.add('v'))})},{threshold:.25});
+  S.forEach(s=>O.observe(s));
+  function U(){const t=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;B.style.width=(h>0?t/h*100:0)+'%';let c=1;S.forEach((s,i)=>{if(s.getBoundingClientRect().top<window.innerHeight*.5)c=i+1});C.textContent=c+' / '+T}
+  window.addEventListener('scroll',U,{passive:true});U();
+  document.addEventListener('keydown',e=>{if(['ArrowDown',' ','ArrowRight'].includes(e.key)){e.preventDefault();go(1)}if(['ArrowUp','ArrowLeft'].includes(e.key)){e.preventDefault();go(-1)}});
+  function go(d){let c=0;S.forEach((s,i)=>{if(s.getBoundingClientRect().top<window.innerHeight*.5)c=i});const n=S[c+d];if(n)n.scrollIntoView({behavior:'smooth'})}
+  let ty=0;
+  document.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+  document.addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)go(d>0?1:-1)},{passive:true});
+})();
+</script>
+</body>
+</html>

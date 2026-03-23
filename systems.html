@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS OS — Live Demo Playbook | Elevated AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root {
+    --bg: #0a0a0a; --card: #111111; --border: #1a1a1a; --gold: #c9a96e;
+    --gold-soft: rgba(201,169,110,0.12); --gold-glow: rgba(201,169,110,0.06);
+    --text: #d4d4d4; --muted: #777; --dim: #444; --white: #fff;
+    --green: #4ade80; --green-bg: rgba(74,222,128,0.1); --green-border: rgba(74,222,128,0.25);
+    --blue: #60a5fa; --blue-bg: rgba(96,165,250,0.1); --blue-border: rgba(96,165,250,0.25);
+    --red: #f87171; --orange: #fb923c;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1000px; margin:0 auto; padding:0 24px; }
+  a { color:var(--gold); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* NAV */
+  .nav { position:sticky; top:0; z-index:100; background:rgba(10,10,10,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:12px 0; }
+  .nav-inner { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .nav-brand { font-weight:700; color:var(--gold); font-size:14px; margin-right:16px; white-space:nowrap; }
+  .nav a.pill { padding:5px 12px; border-radius:6px; font-size:11px; font-weight:600; color:var(--muted); background:rgba(255,255,255,0.04); border:1px solid transparent; transition:all .15s; white-space:nowrap; text-decoration:none; }
+  .nav a.pill:hover { color:var(--gold); border-color:var(--gold); background:var(--gold-soft); }
+
+  /* HERO */
+  .hero { padding:64px 0 48px; text-align:center; border-bottom:1px solid var(--border); }
+  .badge { display:inline-block; padding:5px 14px; border:1px solid var(--gold); border-radius:16px; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+  .hero h1 { font-size:44px; font-weight:800; color:var(--white); line-height:1.15; margin-bottom:12px; }
+  .hero h1 span { color:var(--gold); }
+  .hero .sub { font-size:17px; color:var(--muted); max-width:640px; margin:0 auto; }
+  .hero-row { display:flex; justify-content:center; gap:40px; margin-top:32px; flex-wrap:wrap; }
+  .hero-stat .n { font-size:28px; font-weight:700; color:var(--gold); }
+  .hero-stat .l { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+
+  /* SYSTEM SECTION */
+  .sys { padding:56px 0; border-bottom:1px solid var(--border); }
+  .sys-head { display:flex; align-items:center; gap:16px; margin-bottom:8px; flex-wrap:wrap; }
+  .sys-num { width:36px; height:36px; border-radius:10px; background:var(--gold-soft); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:var(--gold); flex-shrink:0; }
+  .sys h2 { font-size:26px; font-weight:700; color:var(--white); }
+  .sys .tag { display:inline-block; padding:3px 10px; border-radius:8px; font-size:10px; font-weight:700; letter-spacing:1px; }
+  .tag.live { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+  .tag.built { background:var(--blue-bg); color:var(--blue); border:1px solid var(--blue-border); }
+  .sys .role { font-size:14px; color:var(--gold); font-weight:500; margin-bottom:16px; }
+  .sys .problem { background:rgba(248,113,113,0.06); border:1px solid rgba(248,113,113,0.15); border-radius:8px; padding:16px 20px; margin-bottom:24px; font-size:14px; color:#fca5a5; }
+  .sys .problem strong { color:var(--red); }
+  .sys .desc { font-size:15px; color:var(--text); margin-bottom:24px; line-height:1.7; }
+
+  /* FLOW STEPS */
+  .flow { margin-bottom:28px; }
+  .flow-title { font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:16px; }
+  .flow-step { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .flow-step:last-child { border-bottom:none; }
+  .flow-n { min-width:26px; height:26px; border-radius:7px; background:var(--gold-soft); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--gold); flex-shrink:0; }
+  .flow-body { flex:1; }
+  .flow-body p { font-size:14px; color:var(--text); line-height:1.6; }
+  .flow-body .link { display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:4px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:5px; font-size:11px; color:var(--gold); font-weight:500; transition:all .15s; }
+  .flow-body .link:hover { border-color:var(--gold); background:var(--gold-soft); text-decoration:none; }
+  .flow-body .link .dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
+
+  /* DEMO BOX */
+  .demo { background:linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.02)); border:1px solid rgba(201,169,110,0.2); border-radius:10px; padding:20px 24px; margin-bottom:24px; }
+  .demo-title { font-size:12px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+  .demo ol { padding-left:20px; }
+  .demo li { font-size:14px; color:var(--text); padding:4px 0; }
+  .demo code { background:rgba(255,255,255,0.08); padding:2px 8px; border-radius:4px; font-size:12px; color:var(--gold); font-family:'SF Mono',Monaco,monospace; }
+
+  /* METRICS */
+  .metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:24px; }
+  .m { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:14px 16px; }
+  .m .l { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:3px; }
+  .m .v { font-size:17px; font-weight:700; }
+  .m .v.gold { color:var(--gold); }
+  .m .v.green { color:var(--green); }
+  .m .note { font-size:10px; color:var(--dim); margin-top:2px; }
+
+  /* SELL BOX */
+  .sell { background:rgba(96,165,250,0.05); border:1px solid rgba(96,165,250,0.15); border-radius:10px; padding:20px 24px; margin-bottom:8px; }
+  .sell-title { font-size:12px; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+  .sell p, .sell li { font-size:14px; color:var(--text); line-height:1.6; }
+  .sell ul { padding-left:18px; }
+  .sell li { padding:3px 0; }
+  .sell .price-tag { display:inline-block; padding:4px 12px; background:var(--gold-soft); border:1px solid rgba(201,169,110,0.3); border-radius:6px; font-size:14px; font-weight:700; color:var(--gold); margin-top:8px; }
+
+  /* PRICING SECTION */
+  .pricing-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; margin-top:32px; }
+  .pkg { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px; position:relative; }
+  .pkg.pop { border-color:var(--gold); box-shadow:0 0 40px var(--gold-glow); }
+  .pkg.pop::before { content:'BEST VALUE'; position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--bg); font-size:9px; font-weight:800; letter-spacing:1.5px; padding:3px 12px; border-radius:8px; }
+  .pkg h4 { font-size:17px; font-weight:700; color:var(--white); }
+  .pkg .pp { font-size:32px; font-weight:800; color:var(--gold); margin:10px 0 2px; }
+  .pkg .pp span { font-size:14px; font-weight:400; color:var(--muted); }
+  .pkg .rec { font-size:13px; color:var(--muted); margin-bottom:16px; }
+  .pkg ul { list-style:none; }
+  .pkg li { font-size:13px; color:var(--text); padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); padding-left:20px; position:relative; }
+  .pkg li::before { content:''; position:absolute; left:0; top:12px; width:8px; height:8px; border-radius:50%; background:var(--gold-soft); border:2px solid var(--gold); }
+
+  /* ROI TABLE */
+  .roi { width:100%; border-collapse:collapse; margin:24px 0; }
+  .roi th { text-align:left; font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:1px; padding:10px 14px; border-bottom:1px solid var(--border); }
+  .roi td { font-size:13px; color:var(--text); padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .roi .sav { color:var(--green); font-weight:600; }
+  .roi tr.total td { background:var(--gold-soft); font-weight:700; }
+
+  /* FOOTER */
+  .footer { padding:56px 0; text-align:center; }
+  .footer h2 { font-size:28px; font-weight:700; color:var(--white); margin-bottom:8px; }
+  .footer p { font-size:15px; color:var(--muted); margin-bottom:20px; }
+  .cta { display:inline-block; padding:14px 36px; background:var(--gold); color:var(--bg); font-size:15px; font-weight:700; border-radius:8px; transition:all .2s; text-decoration:none; }
+  .cta:hover { background:#d4b87a; transform:translateY(-1px); text-decoration:none; }
+
+  @media(max-width:640px) {
+    .hero h1 { font-size:28px; }
+    .nav-inner { gap:4px; }
+    .metrics { grid-template-columns:1fr 1fr; }
+    .pricing-grid { grid-template-columns:1fr; }
+  }
+  @media print {
+    body { background:#fff; color:#333; }
+    .nav { display:none; }
+    .sys { page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+<div class="wrap nav-inner">
+  <span class="nav-brand">JARVIS OS</span>
+  <a class="pill" href="#ai-receptionist">AI Receptionist</a>
+  <a class="pill" href="#ai-closer">AI Sales Closer</a>
+  <a class="pill" href="#cashclaw">CashClaw</a>
+  <a class="pill" href="#content-engine">Content Engine</a>
+  <a class="pill" href="#ai-influencers">AI Influencers</a>
+  <a class="pill" href="#lead-gen">Lead Gen</a>
+  <a class="pill" href="#white-paper">White Paper</a>
+  <a class="pill" href="#openclaw">OpenClaw</a>
+  <a class="pill" href="#engagement">24/7 Engagement</a>
+  <a class="pill" href="#pricing">Pricing</a>
+</div>
+</div>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">Live Demo Playbook</div>
+  <h1>Every System. <span>Every Link.</span><br>Every Step.</h1>
+  <p class="sub">This is what's running right now. Open any link. Call any number. Everything here is real, live, and ready to deploy for clients.</p>
+  <div class="hero-row">
+    <div class="hero-stat"><div class="n">9</div><div class="l">Systems Live</div></div>
+    <div class="hero-stat"><div class="n">13</div><div class="l">AI Agents</div></div>
+    <div class="hero-stat"><div class="n">$447</div><div class="l">Monthly Run Cost</div></div>
+    <div class="hero-stat"><div class="n">$85K+</div><div class="l">Salary Replaced</div></div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 1. AI RECEPTIONIST -->
+<!-- ============================================ -->
+<section class="sys" id="ai-receptionist">
+  <div class="sys-head">
+    <div class="sys-num">1</div>
+    <h2>AI Receptionist</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">Voice AI that answers every call, qualifies leads, books appointments — 24/7</div>
+
+  <div class="problem"><strong>The Problem:</strong> Business owners miss 40-60% of inbound calls. Every missed call is a missed sale. Hiring a receptionist costs $3-5K/month and they still go home at 5pm.</div>
+
+  <div class="desc">A VAPI-powered voice agent that picks up every call instantly, has a natural conversation, qualifies the caller, handles objections, and books them straight into the calendar. Works inbound and outbound on the same number. Sounds human — not like a robot.</div>
+
+  <div class="flow">
+    <div class="flow-title">How It Works</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p>Customer calls the business number — AI picks up in under 1 second</p><a class="link" href="tel:+15129670954"><span class="dot"></span>Live Number: +1 (512) 967-0954 — call it right now</a></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p>Natural voice conversation — answers questions, qualifies, identifies needs. Uses ElevenLabs voice clone (sounds exactly like the business owner)</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p>Qualified lead gets booked directly into the calendar — no human intervention needed</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p>Instant Telegram alert with call summary, transcript, and lead score</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p>CRM auto-updated — new contact created, tags applied, pipeline stage set</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p>Follow-up sequence fires: confirmation email, reminder, nurture drip</p></div></div>
+    <div class="flow-step"><div class="flow-n">7</div><div class="flow-body"><p>Missed callbacks handled by a separate Follow-Up Assistant — picks up where the last call left off</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Call <strong>+1 (512) 967-0954</strong> from any phone</li>
+      <li>You'll hear the AI receptionist answer — have a real conversation</li>
+      <li>Ask about services — have a real conversation with the AI</li>
+      <li>Watch the Telegram notification arrive in real-time</li>
+      <li>Show the CRM entry it creates automatically</li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Monthly Cost</div><div class="v gold">~$70/mo</div><div class="note">VAPI + Twilio minutes</div></div>
+    <div class="m"><div class="l">Replaces</div><div class="v green">$3K-5K/mo</div><div class="note">Receptionist + follow-up staff</div></div>
+    <div class="m"><div class="l">Response Time</div><div class="v">0 seconds</div><div class="note">Never misses, never sleeps</div></div>
+    <div class="m"><div class="l">Assistants</div><div class="v">3</div><div class="note">Inbound / Outbound / Follow-Up</div></div>
+  </div>
+
+  <div class="sell">
+    <div class="sell-title">How to Sell This</div>
+    <p>Standalone product or add-on. Every business with a phone needs this.</p>
+    <ul>
+      <li><strong>Target:</strong> Dentists, lawyers, HVAC, real estate, any service business</li>
+      <li><strong>Pitch:</strong> "How many calls did you miss last month? Each one is worth $200-2000. This answers every single one."</li>
+      <li><strong>Demo:</strong> Call the number in front of them. Let them talk to it. That closes the deal.</li>
+      <li><strong>Upsell:</strong> Add outbound calling (cold leads, follow-ups, appointment reminders)</li>
+    </ul>
+    <div class="price-tag">Starter: $2,500 setup + $500/mo</div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 2. LEGALSHIELD — FULL SYSTEM -->
+<!-- ============================================ -->
+<section class="sys" id="ai-closer">
+  <div class="sys-head">
+    <div class="sys-num">2</div>
+    <h2>AI Sales Closer</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">Complete automated sales pipeline: leads come in, AI calls them, closes the deal, enrolls them</div>
+
+  <div class="problem"><strong>The Problem:</strong> Sales teams get leads but don't follow up fast enough. By the time they call, the lead is cold. Manual dialing takes hours. Most reps burn out because the process is brutal.</div>
+
+  <div class="desc">End-to-end AI sales machine. Leads arrive from any source — web forms, purchased lists, scrapers, referrals. AI parses the lead, creates a CRM contact, fires an outbound voice call within minutes, handles the full sales conversation including pricing and objections, and books the deal. The entire pipeline runs without touching it.</div>
+
+  <div class="flow">
+    <div class="flow-title">The Full Process (End to End)</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>Lead arrives</strong> — from any source: web form, lead vendor, scraper, CRM import, referral</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>AI parses the lead</strong> — extracts name, phone, email, needs. Verifies phone number via Cloudflare Worker.</p><a class="link" href="https://lina-verifier.dylanewing.workers.dev"><span class="dot"></span>Lead Verifier (Cloudflare Worker)</a></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>CRM contact created</strong> — name, phone, email, tags applied (lead source, category, date)</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>AI outbound call fires</strong> — voice clone calls the lead with a casual, human-sounding opener</p><a class="link" href="tel:+15129670954"><span class="dot"></span>Live Demo: +1 (512) 967-0954</a></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p><strong>Full sales conversation</strong> — AI discusses their needs, explains benefits, handles objections, quotes pricing, asks qualifying questions</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p><strong>If interested:</strong> AI sends enrollment/signup link. Pipeline stage updated to "Interested" in CRM</p></div></div>
+    <div class="flow-step"><div class="flow-n">7</div><div class="flow-body"><p><strong>If no answer:</strong> Scheduled for callback via Follow-Up Assistant. 3 attempts over 48 hours, then moved to nurture</p></div></div>
+    <div class="flow-step"><div class="flow-n">8</div><div class="flow-body"><p><strong>Instant alert:</strong> Every call outcome sent to Telegram — transcript, duration, result, next action</p></div></div>
+    <div class="flow-step"><div class="flow-n">9</div><div class="flow-body"><p><strong>Lead quality check:</strong> Bad leads (disconnected, wrong number, etc.) auto-flagged for vendor refund within refund window</p></div></div>
+    <div class="flow-step"><div class="flow-n">10</div><div class="flow-body"><p><strong>Future:</strong> AI takes payment by phone — reads card info, processes via Stripe, confirms live on the call</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Show a lead email arriving (or simulate one)</li>
+      <li>Watch the CRM contact get created automatically</li>
+      <li>Call +1 (512) 967-0954 and have the AI run the sales conversation</li>
+      <li>Show the Telegram notification with call transcript</li>
+      <li>Show the CRM pipeline with stages: New > Called > Interested > Enrolled</li>
+      <li>Show the 3-assistant setup: Inbound / Outbound / Follow-Up — same voice, different scripts</li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Monthly Cost</div><div class="v gold">~$150/mo</div><div class="note">VAPI + Twilio + lead source</div></div>
+    <div class="m"><div class="l">Replaces</div><div class="v green">$4K-8K/mo</div><div class="note">Sales closer + appointment setter</div></div>
+    <div class="m"><div class="l">Close Rate</div><div class="v">5-15%</div><div class="note">On qualified, speed-to-lead calls</div></div>
+    <div class="m"><div class="l">Voice Assistants</div><div class="v">3</div><div class="note">Inbound / Outbound / Follow-Up</div></div>
+  </div>
+
+  <div class="sell">
+    <div class="sell-title">How to Package This</div>
+    <ul>
+      <li><strong>For any sales team:</strong> Done-for-you AI closer that handles leads 24/7 — insurance, legal, real estate, coaching, consulting</li>
+      <li><strong>Clone per client:</strong> Same engine, different scripts. One setup, unlimited verticals.</li>
+      <li><strong>The pitch:</strong> "Your leads get called within 5 minutes. Every time. No hiring. No training. No missed follow-ups."</li>
+    </ul>
+    <div class="price-tag">Growth Package: $10,000 setup + $2,000/mo</div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 3. CASHCLAW -->
+<!-- ============================================ -->
+<section class="sys" id="cashclaw">
+  <div class="sys-head">
+    <div class="sys-num">3</div>
+    <h2>CashClaw — SEO Audit Machine</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">Find businesses, audit their website, send personalized outreach with real data, close them on fixing it</div>
+
+  <div class="problem"><strong>The Problem:</strong> Most businesses have broken SEO and don't know it. Agencies charge $500-2000/month for audits you can automate for $0.10. The audit itself is the lead magnet AND the sales tool.</div>
+
+  <div class="desc">Fully autonomous pipeline. Scrapes businesses in any niche, runs a real 15-point SEO audit on their website, generates a professional HTML report, and sends a personalized email with their actual problems. When they reply, one click sends the full report with a Stripe payment link. $497 one-time or $297/month ongoing.</div>
+
+  <div class="flow">
+    <div class="flow-title">The Full Pipeline</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>Scraper finds targets</strong> — Google Maps, government databases, industry directories. 10+ niches pre-configured</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>Cloudflare Worker runs SEO audit</strong> — 15-point check: title tags, meta descriptions, H1 structure, image alt text, mobile, page speed, schema markup, Open Graph, robots.txt, sitemap, canonical URLs, SSL, broken links</p><a class="link" href="https://seo-audit-api.dylanewing.workers.dev" target="_blank"><span class="dot"></span>Live Audit API</a></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>Professional HTML report generated</strong> — branded, scored, with specific fix recommendations for their site</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>Personalized outreach email</strong> — sent from your domain via Resend. References their actual SEO problems. Not a template — real data.</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p><strong>Reply detected</strong> — Telegram notification with context. One click to send the full audit report.</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p><strong>Stripe payment link in the report</strong> — prospect can buy the fix package immediately</p><a class="link" href="https://buy.stripe.com/3cIbJ25Ok6LjeQQ9j2eQM27" target="_blank"><span class="dot"></span>Stripe: $497 SEO Fix Package</a></div></div>
+    <div class="flow-step"><div class="flow-n">7</div><div class="flow-body"><p><strong>Follow-up sequence</strong> — automated reminders for non-responders. "I audited your site last week..."</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Go to the landing page: <a href="https://free-seo-audit-6uc.pages.dev" target="_blank">free-seo-audit-6uc.pages.dev</a></li>
+      <li>Enter any business website — watch the audit run in real-time</li>
+      <li>Show the generated audit report (10 real reports in the system)</li>
+      <li>Show a sent outreach email (8 already sent)</li>
+      <li>Show the Stripe payment link and checkout flow</li>
+      <li>Show the Telegram notification when someone replies</li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Monthly Cost</div><div class="v gold">~$20/mo</div><div class="note">Cloudflare free + Resend</div></div>
+    <div class="m"><div class="l">Replaces</div><div class="v green">$5K-10K/mo</div><div class="note">SDR team + lead research</div></div>
+    <div class="m"><div class="l">Revenue per Sale</div><div class="v">$497</div><div class="note">90% margin ($0.10 API cost)</div></div>
+    <div class="m"><div class="l">Pipeline Now</div><div class="v">117 leads</div><div class="note">10 niches, 8 emails sent</div></div>
+  </div>
+
+  <div class="sell">
+    <div class="sell-title">How to Sell This</div>
+    <ul>
+      <li><strong>As a standalone product:</strong> White-label the audit tool. Agencies resell it to their clients.</li>
+      <li><strong>As a lead gen service:</strong> "We'll find 100 businesses in your niche and send them personalized audits."</li>
+      <li><strong>Case study:</strong> Detailed.com built a 6-figure business with $40 video audits that upsell to $5,500 packages</li>
+      <li><strong>Demo closer:</strong> Run their website through the audit live. Show them their broken SEO. Then offer to fix it.</li>
+    </ul>
+    <div class="price-tag">$497 per fix / $297/mo ongoing / $1,497 premium</div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 4. CONTENT ENGINE -->
+<!-- ============================================ -->
+<section class="sys" id="content-engine">
+  <div class="sys-head">
+    <div class="sys-num">4</div>
+    <h2>AI Content Engine</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">1 raw video or photo shoot becomes 10+ pieces of content — captions, hashtags, CTAs — posted automatically</div>
+
+  <div class="problem"><strong>The Problem:</strong> Business owners know they need to post daily across 4-5 platforms. Hiring a content team costs $8K-15K/month. Most end up posting once a week or not at all.</div>
+
+  <div class="desc">Feed the system one raw video or photo. It multiplies it into 10+ pieces: clips, quotes, carousels, stories, reels — each optimized for the target platform. AI writes captions in your exact brand voice. 30-day calendar auto-generated. Telegram approval gate means nothing goes live without your sign-off.</div>
+
+  <div class="flow">
+    <div class="flow-title">The Pipeline</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>Input:</strong> Drop one raw video, photo set, or even just a topic into the system</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>Content Multiplier:</strong> AI breaks it into 10+ derivative pieces — each formatted for its target platform</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>Caption Generator:</strong> Platform-optimized copy in your brand voice — hooks, hashtags, CTAs, emoji strategy</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>30-Day Calendar:</strong> Auto-generated monthly. Themed weeks. Posting times optimized per platform.</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p><strong>Telegram Approval:</strong> Each piece sent to you — tap to approve, edit, or reject. Nothing posts without sign-off.</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p><strong>Auto-Post:</strong> Approved content goes to Instagram, TikTok, LinkedIn, Facebook at scheduled times</p></div></div>
+    <div class="flow-step"><div class="flow-n">7</div><div class="flow-body"><p><strong>Performance Tracking:</strong> Monthly report shows what's working. System adjusts strategy based on data.</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Show the content multiplier script processing a raw video</li>
+      <li>Show 10 generated caption variants for the same piece</li>
+      <li>Show the 30-day content calendar</li>
+      <li>Show the Telegram approval gate (tested and working)</li>
+      <li>Show Dylan's existing accounts: @dylan_ewing13 (27K IG), @dylan_in_philippines (18K TikTok)</li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Monthly Cost</div><div class="v gold">~$35/mo</div><div class="note">Claude Haiku + posting API</div></div>
+    <div class="m"><div class="l">Replaces</div><div class="v green">$8K-15K/mo</div><div class="note">Content team or agency</div></div>
+    <div class="m"><div class="l">Output</div><div class="v">10x</div><div class="note">1 piece in, 10+ out</div></div>
+    <div class="m"><div class="l">Platforms</div><div class="v">5</div><div class="note">IG, TikTok, LI, FB, YT</div></div>
+  </div>
+
+  <div class="sell">
+    <div class="sell-title">How to Sell This</div>
+    <ul>
+      <li><strong>Perfect for:</strong> Coaches, consultants, practice owners, personal brands — anyone who needs content but doesn't have time</li>
+      <li><strong>Pitch:</strong> "You record one 5-minute video. We turn it into a month of content. You approve via Telegram. Done."</li>
+      <li><strong>Proof:</strong> Show Dylan's real accounts with 27K and 18K followers</li>
+    </ul>
+    <div class="price-tag">$10,000 setup + $2,000/mo managed</div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 5. AI INFLUENCERS -->
+<!-- ============================================ -->
+<section class="sys" id="ai-influencers">
+  <div class="sys-head">
+    <div class="sys-num">5</div>
+    <h2>AI Influencers</h2>
+    <span class="tag built">BUILT</span>
+  </div>
+  <div class="role">AI-generated personas with consistent faces, unique voices, and real engagement — selling products with viral posts</div>
+
+  <div class="problem"><strong>The Problem:</strong> Influencer marketing works, but real influencers are expensive ($5K-50K per post), unreliable, and you don't own the audience. AI influencers cost $0.15 per post and you own everything.</div>
+
+  <div class="desc">This is happening all over the industry right now. Aitana Lopez makes $30K/month. Lil Miquela earns $40K/month from brand deals. They are 100% AI-generated. We build the same thing — custom AI personas with face-consistent images, cloned voices, full brand identities, and viral content strategies. Each one builds its own audience and sells products.</div>
+
+  <div class="flow">
+    <div class="flow-title">How It Works</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>Persona Design:</strong> Face, voice, brand identity, content pillars, personality traits — all defined in a "SOUL" file</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>Face Generation:</strong> fal.ai with InstantID generates the same face in different scenes, outfits, locations — always recognizable</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>Voice Cloning:</strong> ElevenLabs creates a unique voice for each persona. They sound the same across all content.</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>Content Generation:</strong> AI writes captions, hooks, and scripts in the persona's unique voice. Not generic — each has personality.</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p><strong>Video Pipeline (Phase 2):</strong> Script > Voice > Face video > Lip sync > Subtitles > Final edit. Cost: ~$0.15-0.35 per Reel.</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p><strong>Posting + Growth:</strong> Daily content across IG, TikTok, YouTube. Engagement strategy. Hashtag optimization. Viral hook testing.</p></div></div>
+    <div class="flow-step"><div class="flow-n">7</div><div class="flow-body"><p><strong>Monetization:</strong> Affiliate links, brand deals, product promotion, funnel traffic — each persona is a revenue channel.</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Show 10 Jade images — same face, different scenes (generated and ready)</li>
+      <li>Show the persona identity files — each with unique face, voice, brand</li>
+      <li>Show the 30-day content calendar for Jade</li>
+      <li>Show 10 generated captions — each in Jade's voice</li>
+      <li>Pull up Aitana Lopez ($30K/mo) and Lil Miquela ($40K/mo) as proof this market works</li>
+      <li>Show the cost math: $0.15/post vs $5K-50K per real influencer post</li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Monthly Cost</div><div class="v gold">~$50/mo</div><div class="note">fal.ai + ElevenLabs + Claude</div></div>
+    <div class="m"><div class="l">Replaces</div><div class="v green">$10K-20K/mo</div><div class="note">Creative agency + influencer fees</div></div>
+    <div class="m"><div class="l">Cost per Post</div><div class="v">$0.15-0.35</div><div class="note">Images even cheaper</div></div>
+    <div class="m"><div class="l">Personas Built</div><div class="v">3</div><div class="note">Multiple AI personas ready</div></div>
+  </div>
+
+  <div class="sell">
+    <div class="sell-title">The $10K Product</div>
+    <ul>
+      <li><strong>The pitch to clients:</strong> "We create an AI version of your brand that posts daily, sounds like you, and builds your audience while you sleep."</li>
+      <li><strong>Dentist example:</strong> AI dental influencer posts tips daily, drives booking traffic, costs $50/mo instead of $15K agency retainer</li>
+      <li><strong>First-mover advantage:</strong> Nobody in the APAC market is offering done-for-you AI content engines at this level.</li>
+      <li><strong>Revenue model:</strong> $10K setup + $2K/mo per client. Scale with partners for 50/50 splits.</li>
+    </ul>
+    <div class="price-tag">$10,000 setup + $2,000/mo managed</div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 6. LEAD GEN PIPELINE -->
+<!-- ============================================ -->
+<section class="sys" id="lead-gen">
+  <div class="sys-head">
+    <div class="sys-num">6</div>
+    <h2>Lead Gen Pipeline</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">Multi-source scraping, email verification, campaign management — from stranger to booked call</div>
+
+  <div class="desc">Scrapes leads from government databases (161K+ state-verified brokers), Google Maps (26 US cities), and industry directories. Verifies emails with a 10-point Cloudflare Worker check. Pushes to cold email campaigns with 7 variant sequences. Replies auto-forwarded to Telegram.</div>
+
+  <div class="flow">
+    <div class="flow-title">Pipeline Steps</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p>Define target: industry, location, company size, job title</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p>Multi-source scraper pulls leads — government DBs, Google Maps via Outscraper, Apollo</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p>Email verification via Cloudflare Worker — 10-point check, no bounces</p><a class="link" href="https://lina-verifier.dylanewing.workers.dev" target="_blank"><span class="dot"></span>Lina Verifier Worker</a></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p>Leads pushed to cold email campaigns — 7 variant sequences per campaign</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p>Replies auto-detected, scored, and forwarded to Telegram</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p>Interested leads auto-booked or handed to AI voice closer</p></div></div>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Monthly Cost</div><div class="v gold">~$67/mo</div><div class="note">Outscraper + Instantly + Workers</div></div>
+    <div class="m"><div class="l">Replaces</div><div class="v green">$3K-6K/mo</div><div class="note">Research team + lead gen</div></div>
+    <div class="m"><div class="l">Database</div><div class="v">161K+</div><div class="note">State-verified, always fresh</div></div>
+    <div class="m"><div class="l">Cities Covered</div><div class="v">26</div><div class="note">Outscraper data ready</div></div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 7. WHITE PAPER CAMPAIGN (CONOR) -->
+<!-- ============================================ -->
+<section class="sys" id="white-paper">
+  <div class="sys-head">
+    <div class="sys-num">7</div>
+    <h2>White Paper Lead Gen</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">Authority-positioning cold email campaigns that turn strangers into calls booked</div>
+
+  <div class="desc">Two proven campaign angles running on Instantly: White Paper Interview (research authority play) and Free AI Receptionist (2-week trial offer). 7 email variants each, built from Belkins, Frank Kern, and Jonathan Stark copy frameworks. Bridge webhook pushes all events to Telegram in real-time.</div>
+
+  <div class="flow">
+    <div class="flow-title">Campaign Architecture</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>White Paper Interview:</strong> "We're writing a white paper on [industry topic] — can I interview you for 15 minutes?" — positions the prospect as the expert, books the call, then pivots to offering services</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>Free AI Receptionist:</strong> "We'll install an AI receptionist on your phone line for free for 2 weeks. If you don't love it, nothing to pay." — trial offer that converts to $500/mo</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>Instantly Bridge:</strong> All email events (opens, replies, clicks) forwarded to Telegram via Cloudflare Worker webhook</p><a class="link" href="https://instantly-bridge.dylanewing.workers.dev" target="_blank"><span class="dot"></span>Instantly Bridge Worker</a></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>Reply handling:</strong> Interested replies forwarded to your booking link. Negative replies auto-removed.</p></div></div>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Campaigns</div><div class="v">2</div><div class="note">White Paper + AI Receptionist</div></div>
+    <div class="m"><div class="l">Variants</div><div class="v">7 each</div><div class="note">Belkins/Kern/Stark frameworks</div></div>
+    <div class="m"><div class="l">Leads Pushed</div><div class="v">1,437</div><div class="note">Via bridge, copy rewritten</div></div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 8. OPENCLAW -->
+<!-- ============================================ -->
+<section class="sys" id="openclaw">
+  <div class="sys-head">
+    <div class="sys-num">8</div>
+    <h2>OpenClaw — The Action Layer</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">Unified API that lets every bot TAKE ACTIONS across GHL, VAPI, Stripe, Instantly, and Telegram</div>
+
+  <div class="desc">The brain stem of the entire system. OpenClaw is a centralized action API deployed on Railway. Any bot can call it to search contacts, create leads, fire outbound calls, check Stripe balance, send invoices, pause email campaigns, or message Telegram — all through one authenticated endpoint with per-bot permissions.</div>
+
+  <div class="flow">
+    <div class="flow-title">14 Live Actions</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>GHL:</strong> searchContacts, createContact, updateContact, createOpportunity</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>VAPI:</strong> makeCall (fire outbound AI call), listCalls (get call logs)</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>Stripe:</strong> getBalance, getTransactions, getSubscriptions, createPaymentLink, createInvoice</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>Instantly:</strong> getCampaigns (email campaign status)</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p><strong>Telegram:</strong> send (message Dylan from any bot)</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p><strong>Logging:</strong> Every action logged to audit trail — who did what, when, with what result</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Hit the status endpoint: <a href="https://dazzling-generosity-production.up.railway.app/openclaw/status" target="_blank">OpenClaw Status</a></li>
+      <li>Show a curl command that searches GHL contacts via OpenClaw</li>
+      <li>Show how a bot fires an outbound VAPI call through the API</li>
+      <li>Show Stripe balance check in real-time</li>
+      <li>Explain: "Each client gets their own OpenClaw instance — same power, their own APIs"</li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">Actions</div><div class="v">14</div><div class="note">GHL + VAPI + Stripe + more</div></div>
+    <div class="m"><div class="l">Bots Connected</div><div class="v">6</div><div class="note">Each with role-based permissions</div></div>
+    <div class="m"><div class="l">Uptime</div><div class="v">24/7</div><div class="note">Railway hosting, auto-deploy</div></div>
+  </div>
+
+  <div class="sell">
+    <div class="sell-title">Why This Matters for Clients</div>
+    <p>OpenClaw is what makes JARVIS OS <strong>installable</strong> for other businesses. One prompt, one API setup, and the client has the same bot army running on their own CRM, phone system, and payment processor. This is the product.</p>
+    <div class="price-tag">Enterprise: $25,000 setup + $5,000/mo</div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 9. 24/7 CUSTOMER ENGAGEMENT -->
+<!-- ============================================ -->
+<section class="sys" id="engagement">
+  <div class="sys-head">
+    <div class="sys-num">9</div>
+    <h2>24/7 Customer Engagement</h2>
+    <span class="tag live">LIVE</span>
+  </div>
+  <div class="role">CRM automation + voice AI + email sequences + bot army = no lead ever goes cold</div>
+
+  <div class="desc">The full engagement layer: GHL CRM tracks every contact through the pipeline. Voice AI follows up within minutes. Email sequences nurture over 30 days. Bot army monitors for dropped leads, missed follow-ups, and stalled deals. Daily briefing shows what needs attention. Nothing falls through the cracks.</div>
+
+  <div class="flow">
+    <div class="flow-title">Engagement Flow</div>
+    <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><p><strong>Lead enters system</strong> — from any source: form, call, email, scraper, import</p></div></div>
+    <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><p><strong>Instant response</strong> — AI calls or emails within 5 minutes (speed-to-lead is everything)</p></div></div>
+    <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><p><strong>Pipeline tracking</strong> — every contact moves through stages: New > Contacted > Interested > Booked > Closed</p></div></div>
+    <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><p><strong>Automated follow-up</strong> — missed calls get 3 callback attempts over 48 hours. No-shows get re-engagement sequence.</p></div></div>
+    <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><p><strong>Nurture sequences</strong> — 30-day email series (41 emails written) keeps cold leads warm until they're ready to buy</p></div></div>
+    <div class="flow-step"><div class="flow-n">6</div><div class="flow-body"><p><strong>Daily briefing</strong> — morning Telegram report: new leads, stalled deals, follow-ups due, revenue collected</p></div></div>
+    <div class="flow-step"><div class="flow-n">7</div><div class="flow-body"><p><strong>Bot monitoring</strong> — 13 bots watch for anomalies: dropped leads, failed payments, missed calls, broken sequences</p></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-title">Live Demo</div>
+    <ol>
+      <li>Show the GHL CRM with 2,273 contacts and pipeline stages</li>
+      <li>Show a Telegram daily briefing</li>
+      <li>Show the 41 Freedom Code nurture emails (all HTML, all ready)</li>
+      <li>Show how a new lead triggers the full automation chain</li>
+      <li>Show the Freedom Code funnel: <a href="https://thedylanewing.com" target="_blank">thedylanewing.com</a> > <a href="https://thedylanewing.com/a/" target="_blank">Quiz</a> > <a href="https://thedylanewing.com/freedom-code/" target="_blank">Sales Page</a> > <a href="https://course.thedylanewing.com" target="_blank">Course</a></li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="l">CRM Contacts</div><div class="v">2,273</div><div class="note">GHL — fully tagged + tracked</div></div>
+    <div class="m"><div class="l">Email Templates</div><div class="v">41</div><div class="note">30 daily + 6 nurture + 5 pattern</div></div>
+    <div class="m"><div class="l">Bots Monitoring</div><div class="v">13</div><div class="note">Always watching for drops</div></div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- ROI SUMMARY -->
+<!-- ============================================ -->
+<section class="sys" id="roi">
+  <div class="section-header" style="text-align:center;margin-bottom:32px;">
+    <h2 style="font-size:28px;color:var(--white);">Total ROI Summary</h2>
+    <p style="font-size:15px;color:var(--muted);">Full system costs less than one part-time employee</p>
+  </div>
+
+  <table class="roi">
+    <thead>
+      <tr><th>System</th><th>AI Cost/mo</th><th>Human Cost/mo</th><th>You Save</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>AI Receptionist</td><td>$70</td><td>$3K-5K</td><td class="sav">$2,930-4,930</td></tr>
+      <tr><td>AI Sales Closer</td><td>$150</td><td>$4K-8K</td><td class="sav">$3,850-7,850</td></tr>
+      <tr><td>CashClaw SEO Machine</td><td>$20</td><td>$5K-10K</td><td class="sav">$4,980-9,980</td></tr>
+      <tr><td>Content Engine</td><td>$35</td><td>$8K-15K</td><td class="sav">$7,965-14,965</td></tr>
+      <tr><td>AI Influencers</td><td>$50</td><td>$10K-20K</td><td class="sav">$9,950-19,950</td></tr>
+      <tr><td>Lead Gen Pipeline</td><td>$67</td><td>$3K-6K</td><td class="sav">$2,933-5,933</td></tr>
+      <tr><td>24/7 Engagement + JARVIS</td><td>$55</td><td>$12.5K-21K</td><td class="sav">$12,445-20,945</td></tr>
+      <tr class="total"><td><strong>TOTAL</strong></td><td><strong>$447/mo</strong></td><td><strong>$45.5K-85K/mo</strong></td><td class="sav"><strong>$45K-84.5K/mo saved</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================ -->
+<!-- PRICING -->
+<!-- ============================================ -->
+<section class="sys" id="pricing">
+  <div class="section-header" style="text-align:center;margin-bottom:16px;">
+    <h2 style="font-size:28px;color:var(--white);">Packages</h2>
+    <p style="font-size:15px;color:var(--muted);">Pick what fits. Scale when ready. Every system is live and proven.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pkg">
+      <h4>Starter</h4>
+      <div class="pp">$2,500 <span>setup</span></div>
+      <div class="rec">+ $500/month managed</div>
+      <ul>
+        <li>1 core system (your choice)</li>
+        <li>AI Receptionist OR Content Engine</li>
+        <li>CRM integration</li>
+        <li>Telegram command center</li>
+        <li>Weekly reports</li>
+      </ul>
+    </div>
+    <div class="pkg pop">
+      <h4>Growth</h4>
+      <div class="pp">$10,000 <span>setup</span></div>
+      <div class="rec">+ $2,000/month managed</div>
+      <ul>
+        <li>Everything in Starter</li>
+        <li>Content Engine + AI Influencers</li>
+        <li>CashClaw lead generation</li>
+        <li>Cold email pipeline</li>
+        <li>AI Voice Agent</li>
+        <li>Daily AI briefings</li>
+        <li>Monthly strategy call</li>
+      </ul>
+    </div>
+    <div class="pkg">
+      <h4>Enterprise</h4>
+      <div class="pp">$25,000 <span>setup</span></div>
+      <div class="rec">+ $5,000/month managed</div>
+      <ul>
+        <li>Everything in Growth</li>
+        <li>Full JARVIS OS (13 bots)</li>
+        <li>OpenClaw API layer</li>
+        <li>Custom AI personas</li>
+        <li>Meeting intelligence</li>
+        <li>White-label ready</li>
+        <li>Dedicated support</li>
+        <li>Multi-location support</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<section class="footer">
+  <h2>Every Link Works. Every System Runs.</h2>
+  <p>This isn't a pitch deck. Open any link on this page. Call the number. Run the audit. It's all live.</p>
+  <a class="cta" href="mailto:dylan@thedylanewing.com">dylan@thedylanewing.com</a>
+  <div style="margin-top:28px;font-size:12px;color:var(--dim);">Elevated AI | Dylan Ewing | March 2026</div>
+</section>
+
+</div>
+</body>
+</html>
