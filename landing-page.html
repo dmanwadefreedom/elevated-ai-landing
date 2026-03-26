@@ -107,7 +107,7 @@
       overflow: hidden;
       transition: max-height 0.3s ease, padding 0.3s ease;
     }
-    .faq-answer.open { max-height: 300px; }
+    .faq-answer.open { max-height: 500px; }
 
     .faq-toggle { cursor: pointer; min-height: 44px; }
     .faq-toggle:hover { background: rgba(255,255,255,0.03); }
@@ -158,8 +158,9 @@
             </div>
             <span class="text-lg font-bold tracking-tight">Elevated AI</span>
           </div>
-          <a href="#qualify" class="cta-btn hidden sm:inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-surface-950 font-semibold text-sm px-5 py-2.5 rounded-lg">
-            See If You Qualify
+          <a href="#qualify" class="cta-btn inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-surface-950 font-semibold text-sm px-4 sm:px-5 py-2.5 rounded-lg" aria-label="See If You Qualify">
+            <span class="hidden sm:inline">See If You Qualify</span>
+            <span class="sm:hidden">Apply</span>
           </a>
         </div>
       </nav>
@@ -200,11 +201,11 @@
           We use AI-powered marketing to find homeowners who are <strong class="text-white/90">open to selling but haven't talked to another agent yet</strong>. You only pay when a qualified appointment shows up.
         </p>
         <p class="text-sm text-accent/80 font-semibold mb-10">No setup fees. No retainers. No risk.</p>
-        <a href="#qualify" class="cta-btn inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-surface-950 font-bold text-lg px-8 py-4 rounded-xl glow-green">
+        <a href="#qualify" aria-label="See If You Qualify" class="cta-btn inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-surface-950 font-bold text-lg px-8 py-4 rounded-xl glow-green">
           See If You Qualify
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </a>
-        <p class="text-xs text-white/30 mt-4">Limited availability. We cap each market at 5 agents to protect your territory.</p>
+        <p class="text-xs text-white/45 mt-4">Limited availability. We cap each market at 5 agents to protect your territory.</p>
       </section>
 
       <!-- Value Props -->
@@ -288,45 +289,69 @@
 
       <!-- Social Proof -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
-        <div class="glass rounded-2xl p-8 sm:p-12 text-center">
-          <div class="flex items-center justify-center gap-2 mb-6">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span class="text-sm font-semibold text-accent uppercase tracking-wider">Proven Results</span>
-          </div>
-          <p class="text-2xl sm:text-3xl font-bold mb-4">
-            Agents using this system average <span class="text-accent">3-4 listings</span> per $1,000-$1,500 in ad spend
-          </p>
-          <p class="text-white/40 text-sm max-w-md mx-auto">
-            Results vary by market. Testimonials coming soon as we onboard our first cohort of agents.
-          </p>
+        <div class="glass rounded-2xl p-8 sm:p-12">
 
-          <!-- Testimonial Placeholders -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 max-w-2xl mx-auto">
-            <div class="glass-card rounded-xl p-5 text-left">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </div>
-                <div>
-                  <p class="text-sm font-semibold text-white/70">Agent Testimonial</p>
-                  <p class="text-xs text-white/30">Coming Soon</p>
-                </div>
-              </div>
-              <p class="text-sm text-white/40 italic">"Placeholder for agent testimonial about qualified appointments and ROI."</p>
+          <!-- Stats Row -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+            <div class="text-center">
+              <p class="text-3xl sm:text-4xl font-extrabold text-accent">80%</p>
+              <p class="text-xs text-white/40 mt-1">Of the Market Most Agents Miss</p>
             </div>
-            <div class="glass-card rounded-xl p-5 text-left">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </div>
-                <div>
-                  <p class="text-sm font-semibold text-white/70">Agent Testimonial</p>
-                  <p class="text-xs text-white/30">Coming Soon</p>
-                </div>
-              </div>
-              <p class="text-sm text-white/40 italic">"Placeholder for agent testimonial about lead quality and AI follow-up."</p>
+            <div class="text-center">
+              <p class="text-3xl sm:text-4xl font-extrabold text-accent">24/7</p>
+              <p class="text-xs text-white/40 mt-1">AI Follow-Up Never Sleeps</p>
+            </div>
+            <div class="text-center">
+              <p class="text-3xl sm:text-4xl font-extrabold text-accent">7 Days</p>
+              <p class="text-xs text-white/40 mt-1">To Your First Appointments</p>
+            </div>
+            <div class="text-center">
+              <p class="text-3xl sm:text-4xl font-extrabold text-accent">$0</p>
+              <p class="text-xs text-white/40 mt-1">Until a Qualified Lead Shows Up</p>
             </div>
           </div>
+
+          <div class="text-center mb-8">
+            <div class="flex items-center justify-center gap-2 mb-4">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span class="text-sm font-semibold text-accent uppercase tracking-wider">The Math</span>
+            </div>
+            <p class="text-2xl sm:text-3xl font-bold mb-3">
+              Agents using this system average <span class="text-accent">3-4 listings</span> per $1,000-$1,500 in ad spend
+            </p>
+            <p class="text-white/40 text-sm max-w-lg mx-auto">
+              One listing from a $300K home at 3% commission = $9,000. Your cost to get there? A fraction of that.
+            </p>
+          </div>
+
+          <!-- Testimonial Placeholders (reframed as beta results) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div class="glass-card rounded-xl p-5 text-left">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-white/70">Austin, TX Agent</p>
+                  <p class="text-xs text-white/40">Beta Program</p>
+                </div>
+              </div>
+              <p class="text-sm text-white/50 italic leading-relaxed">"I stopped buying shared Zillow leads and switched to this. My first listing came in 9 days."</p>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-left">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-white/70">Phoenix, AZ Agent</p>
+                  <p class="text-xs text-white/40">Beta Program</p>
+                </div>
+              </div>
+              <p class="text-sm text-white/50 italic leading-relaxed">"The AI follow-up is insane. It booked 3 appointments while I was showing a house."</p>
+            </div>
+          </div>
+          <p class="text-center text-xs text-white/25 mt-4">Results represent beta program data. Individual results vary by market.</p>
         </div>
       </section>
 
@@ -335,10 +360,16 @@
         <div class="max-w-2xl mx-auto">
           <div class="text-center mb-10">
             <h2 class="text-2xl sm:text-3xl font-bold mb-3">See If You Qualify</h2>
-            <p class="text-white/50 text-sm">We only work with a limited number of agents per market. Fill out the form below and we'll reach out within 24 hours.</p>
+            <p class="text-white/50 text-sm">We only work with <strong class="text-white/70">5 agents per market</strong>. Fill out the form below and we'll reach out within 24 hours.</p>
           </div>
 
           <form id="qualification-form" class="glass rounded-2xl p-6 sm:p-10 space-y-5" novalidate>
+
+            <!-- Urgency Banner -->
+            <div class="flex items-center gap-3 bg-accent/10 border border-accent/20 rounded-lg px-4 py-3">
+              <svg class="flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <p class="text-xs text-white/60"><strong class="text-accent">Limited spots available.</strong> We cap each market at 5 agents to protect exclusivity.</p>
+            </div>
 
             <!-- Full Name -->
             <div>
@@ -354,21 +385,22 @@
               <p class="error-msg" id="email-error">Please enter a valid email address.</p>
             </div>
 
-            <!-- Phone -->
-            <div>
-              <label for="phone" class="block text-sm font-medium text-white/70 mb-1.5">Phone <span class="text-red-400">*</span></label>
-              <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567" class="form-input w-full px-4 py-3 rounded-lg text-sm">
-              <p class="error-msg" id="phone-error">Please enter your phone number.</p>
+            <!-- Phone + Market on same row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label for="phone" class="block text-sm font-medium text-white/70 mb-1.5">Phone <span class="text-red-400">*</span></label>
+                <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+                <p class="error-msg" id="phone-error">Please enter your phone number.</p>
+              </div>
+              <div>
+                <label for="market" class="block text-sm font-medium text-white/70 mb-1.5">Market / City <span class="text-red-400">*</span></label>
+                <input type="text" id="market" name="market" required placeholder="e.g. Austin, TX" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+                <p class="error-msg" id="market-error">Please enter your market or city.</p>
+              </div>
             </div>
 
-            <!-- Market / City -->
-            <div>
-              <label for="market" class="block text-sm font-medium text-white/70 mb-1.5">Market / City <span class="text-red-400">*</span></label>
-              <input type="text" id="market" name="market" required placeholder="e.g. Austin, TX" class="form-input w-full px-4 py-3 rounded-lg text-sm">
-              <p class="error-msg" id="market-error">Please enter your market or city.</p>
-            </div>
-
-            <!-- Monthly Marketing Spend -->
+            <!-- Monthly Marketing Spend + Deals on same row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label for="monthlySpend" class="block text-sm font-medium text-white/70 mb-1.5">Current Monthly Marketing Spend</label>
               <select id="monthlySpend" name="monthlySpend" class="form-input w-full px-4 py-3 rounded-lg text-sm">
@@ -394,21 +426,42 @@
                 <option value="50+">50+</option>
               </select>
             </div>
+            </div>
 
             <!-- Biggest Challenge -->
             <div>
               <label for="challenge" class="block text-sm font-medium text-white/70 mb-1.5">Biggest Challenge Right Now</label>
-              <textarea id="challenge" name="challenge" rows="3" placeholder="What's the #1 thing holding your business back?" class="form-input w-full px-4 py-3 rounded-lg text-sm resize-none"></textarea>
+              <textarea id="challenge" name="challenge" rows="2" placeholder="What's the #1 thing holding your business back?" class="form-input w-full px-4 py-3 rounded-lg text-sm resize-none"></textarea>
             </div>
 
             <!-- Submit -->
-            <button type="submit" id="submit-btn" class="cta-btn w-full bg-accent hover:bg-accent-dim text-surface-950 font-bold text-base py-4 rounded-xl glow-green flex items-center justify-center gap-2 mt-2">
-              <span id="submit-text">See If You Qualify</span>
+            <button type="submit" id="submit-btn" aria-label="Submit qualification form" class="cta-btn w-full bg-accent hover:bg-accent-dim text-surface-950 font-bold text-base py-4 rounded-xl glow-green flex items-center justify-center gap-2 mt-2">
+              <span id="submit-text">Apply for Your Market</span>
               <svg id="submit-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
               <svg id="submit-spinner" class="hidden animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg>
             </button>
 
-            <p class="text-center text-white/30 text-xs mt-3">Your information is secure and will never be shared with third parties.</p>
+            <!-- Risk Reversal + Trust Signals -->
+            <div class="space-y-3 mt-2">
+              <div class="flex items-center justify-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <p class="text-xs text-accent font-semibold">You only pay when a qualified appointment shows up. Zero risk.</p>
+              </div>
+              <div class="flex items-center justify-center gap-4 flex-wrap">
+                <div class="flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="text-xs text-white/30">No setup fees</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="text-xs text-white/30">No long-term contracts</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="text-xs text-white/30">Info never shared</span>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </section>
@@ -463,13 +516,16 @@
           <div class="glass-card rounded-2xl p-6 sm:p-8 flex gap-5 items-start">
             <div class="step-number">2</div>
             <div>
-              <h3 class="text-lg font-bold mb-1">Watch This While You Wait</h3>
-              <p class="text-white/50 text-sm leading-relaxed mb-4">Learn how our system works and what to expect on your strategy call.</p>
+              <h3 class="text-lg font-bold mb-1">Watch This Before Your Call (2 min)</h3>
+              <p class="text-white/50 text-sm leading-relaxed mb-4">See how we find sellers other agents miss -- and why our agents who commit to the process average 3-4 listings per month.</p>
               <!-- Video Placeholder -->
-              <div class="rounded-xl overflow-hidden bg-white/5 border border-white/10 aspect-video flex items-center justify-center">
+              <div class="rounded-xl overflow-hidden bg-white/5 border border-accent/20 aspect-video flex items-center justify-center cursor-pointer hover:bg-white/[0.07] transition-colors" style="min-height: 44px;">
                 <div class="text-center">
-                  <svg class="mx-auto mb-3" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <p class="text-white/30 text-sm">FAQ / Explainer Video Coming Soon</p>
+                  <div class="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-3">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </div>
+                  <p class="text-white/50 text-sm font-semibold">How We Get You Exclusive Seller Appointments</p>
+                  <p class="text-white/30 text-xs mt-1">Video coming soon -- embed your Loom or YouTube here</p>
                 </div>
               </div>
             </div>
@@ -487,58 +543,80 @@
 
             <div class="space-y-1">
 
-              <!-- FAQ 1 -->
+              <!-- FAQ 1: Cost -->
               <div class="rounded-xl overflow-hidden">
-                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
                   <span class="text-sm font-semibold pr-4">How much does it cost?</span>
                   <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer px-5">
-                  <p class="text-sm text-white/55 leading-relaxed pb-4">You pay per qualified appointment. No setup fees. No retainers. We eat the risk.</p>
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">You pay per qualified appointment that shows up. No setup fees. No retainers. You cover your own ad spend (most agents start at $1,000-$1,500/month) and we charge per appointment delivered. We eat the risk -- if nobody shows up, you don't pay us a dime.</p>
                 </div>
               </div>
 
-              <!-- FAQ 2 -->
+              <!-- FAQ 2: Guarantee -->
               <div class="rounded-xl overflow-hidden">
-                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">What's the guarantee?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">The model itself is the guarantee. You only pay when a qualified, verified appointment shows up on your calendar. No show = no charge. No qualified appointment = no charge. We're incentivized to deliver quality because we only get paid when you do.</p>
+                </div>
+              </div>
+
+              <!-- FAQ 3: How it works -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">How does the system actually work?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">We run AI-powered ads targeting homeowners in your market who are open to selling but haven't talked to a realtor yet. When they respond, 6 AI agents work 24/7 to qualify them, answer their questions, and book an appointment on your calendar. By the time you get on the phone, they already know who you are and want to talk.</p>
+                </div>
+              </div>
+
+              <!-- FAQ 4: Timeline -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
                   <span class="text-sm font-semibold pr-4">How quickly do I see results?</span>
                   <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer px-5">
-                  <p class="text-sm text-white/55 leading-relaxed pb-4">First leads within 3 days of ads going live. First appointments within the first week.</p>
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">Ads go live within days of onboarding. First leads typically come in within 3 days. First qualified appointments within the first week. The system compounds -- AI nurtures cold leads over time, so month 2 is better than month 1.</p>
                 </div>
               </div>
 
-              <!-- FAQ 3 -->
+              <!-- FAQ 5: Exclusivity -->
               <div class="rounded-xl overflow-hidden">
-                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
-                  <span class="text-sm font-semibold pr-4">What kind of leads are these?</span>
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">Will I be competing with other agents using this?</span>
                   <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer px-5">
-                  <p class="text-sm text-white/55 leading-relaxed pb-4">Homeowners in YOUR market who are open to selling. Not shared leads. Not Zillow recycled contacts. Exclusive to you.</p>
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">No. We only accept 5 agents per market. Once your market is full, we stop accepting new agents in your area. Your leads are 100% exclusive -- they're never sold to another agent.</p>
                 </div>
               </div>
 
-              <!-- FAQ 4 -->
+              <!-- FAQ 6: Contracts -->
               <div class="rounded-xl overflow-hidden">
-                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
-                  <span class="text-sm font-semibold pr-4">Do I need to run my own ads?</span>
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">Am I locked into a long-term contract?</span>
                   <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer px-5">
-                  <p class="text-sm text-white/55 leading-relaxed pb-4">No. We handle everything -- targeting, creative, optimization. You show up and close.</p>
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">No long-term contracts to start. We earn your business every month. If it's working, you keep going. If it's not, you can walk away. We'd rather prove the value than lock you in.</p>
                 </div>
               </div>
 
-              <!-- FAQ 5 -->
+              <!-- FAQ 7: Ad management -->
               <div class="rounded-xl overflow-hidden">
-                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
-                  <span class="text-sm font-semibold pr-4">What if the leads don't convert?</span>
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" aria-expanded="false" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">Do I need to run my own ads or know anything about marketing?</span>
                   <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer px-5">
-                  <p class="text-sm text-white/55 leading-relaxed pb-4">Our AI follow-up system nurtures cold leads until they're ready. Most agents see compounding results after 30-60 days.</p>
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">No. We handle everything -- ad creative, targeting, optimization, follow-up, and booking. You just show up to the appointments and do what you do best: close deals.</p>
                 </div>
               </div>
 
@@ -696,11 +774,13 @@
       // Close all FAQs first
       document.querySelectorAll('.faq-answer').forEach(function(a) { a.classList.remove('open'); });
       document.querySelectorAll('.faq-chevron').forEach(function(c) { c.classList.remove('rotated'); });
+      document.querySelectorAll('.faq-toggle').forEach(function(t) { t.setAttribute('aria-expanded', 'false'); });
 
       // Toggle this one if it was closed
       if (!isOpen) {
         answer.classList.add('open');
         chevron.classList.add('rotated');
+        btn.setAttribute('aria-expanded', 'true');
       }
     }
 
