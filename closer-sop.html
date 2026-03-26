@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Closer SOP — Exclusive Brokerage / Elevated AI Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@media print {
+  body { background: #fff !important; color: #1e293b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page-break { page-break-before: always; }
+  .card { background: #f8fafc !important; border-color: #e2e8f0 !important; }
+  .card-accent { border-left-color: #16A34A !important; }
+  .card-warn { border-left-color: #D97706 !important; }
+  .card-green { border-left-color: #16A34A !important; }
+  h1, h3 { color: #0f172a !important; }
+  h1 span, h2 { color: #16A34A !important; }
+  .script { background: #f1f5f9 !important; color: #334155 !important; border-left-color: #cbd5e1 !important; }
+  .tag { print-color-adjust: exact; }
+  .footer { color: #94a3b8 !important; border-top-color: #e2e8f0 !important; }
+  .divider { border-top-color: #e2e8f0 !important; }
+  .subtitle { color: #64748b !important; border-bottom-color: #e2e8f0 !important; }
+  ul li::before { color: #16A34A !important; }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #020617;
+  color: #cbd5e1;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  line-height: 1.6;
+  padding: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+}
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+h1 span { color: #22C55E; }
+.subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #22C55E;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin: 20px 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+h2 .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 6px;
+  font-size: 13px;
+  color: #22C55E;
+  flex-shrink: 0;
+}
+h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #F59E0B;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 12px 0 4px 0;
+}
+.card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+}
+.card-accent {
+  border-left: 3px solid #22C55E;
+}
+.card-warn {
+  border-left: 3px solid #F59E0B;
+}
+.card-green {
+  border-left: 3px solid #4ADE80;
+}
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+ul li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+ul li::before {
+  content: "\2022";
+  color: #22C55E;
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+}
+ul li.sub {
+  padding-left: 32px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+ul li.sub::before {
+  content: "\2013";
+  color: #64748b;
+  left: 16px;
+}
+.script {
+  color: #e2e8f0;
+  font-style: italic;
+  font-size: 13px;
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-left: 2px solid rgba(34, 197, 94, 0.3);
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+.tag-blue { background: rgba(34, 197, 94, 0.13); color: #4ADE80; }
+.tag-gold { background: rgba(245, 158, 11, 0.13); color: #FBBF24; }
+.tag-green { background: rgba(34, 197, 94, 0.13); color: #4ADE80; }
+.tag-red { background: rgba(239, 68, 68, 0.13); color: #FCA5A5; }
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 16px 0;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  body { padding: 16px; }
+  h1 { font-size: 22px; }
+  .two-col { grid-template-columns: 1fr; }
+}
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+</style>
+</head>
+<body>
+
+<h1>Closer <span>SOP</span></h1>
+<div class="subtitle">Exclusive Brokerage / Elevated AI Solutions &mdash; Pay-Per-Appointment Lead Gen for Real Estate Agents</div>
+
+<!-- ======================== PRE-CALL ======================== -->
+
+<h2><span class="num">0</span> Before the Call &mdash; Pre-Frame System</h2>
+
+<div class="card card-accent">
+<ul>
+  <li><strong>Landing page</strong> &rarr; prospect books a call</li>
+  <li><strong>Thank you page</strong> plays an FAQ video (handles pricing, guarantee, how-it-works objections before you ever speak)</li>
+  <li><strong>"The Doc"</strong> sent via text after booking &mdash; written sales letter explaining what we do, how, and why</li>
+  <li><strong>Boot camp touchpoints</strong> &mdash; educational content keeps them warm between booking and call</li>
+  <li><strong>Value-based follow-ups</strong> (not spammy) &mdash; multiple touches before the call</li>
+</ul>
+</div>
+
+<div class="card card-warn">
+<h3>Why This Matters</h3>
+<ul>
+  <li>By the time they get on the phone, they should already understand the offer</li>
+  <li>Your job is NOT to pitch from scratch &mdash; it's to confirm fit and close</li>
+  <li>The pre-frame does 60-70% of the selling for you</li>
+</ul>
+</div>
+
+<hr class="divider">
+
+<!-- ======================== ON THE CALL ======================== -->
+
+<h2><span class="num">1</span> Connect</h2>
+<div class="card">
+<ul>
+  <li>Connect over background, location, something lighthearted</li>
+  <li><span class="tag tag-red">DON'T</span> ask dumb icebreakers ("How's the weather?")</li>
+  <li>Be human. Be real. Build rapport fast &mdash; 60 seconds max</li>
+</ul>
+</div>
+
+<h2><span class="num">2</span> Context</h2>
+<div class="card card-accent">
+<div class="script">"Did you make time to go through the information I sent? Give me a breakdown &mdash; or are you coming in fresh?"</div>
+<ul>
+  <li><span class="tag tag-green">Reviewed</span> "Love it. That's one thing we look for in a partner &mdash; someone going out of their way. What stood out to you?"</li>
+  <li><span class="tag tag-gold">Didn't review</span> "Off to a rough start already" (playful, not aggressive &mdash; creates accountability)</li>
+</ul>
+</div>
+
+<h2><span class="num">3</span> Intro</h2>
+<div class="card">
+<div class="script">"What we see with a lot of real estate agents is they work hard, have great referral networks, but are missing full control of qualified appointments every week. They've tried Zillow, Realtor.com, running ads, door knocking &mdash; works on and off but breaks. We use targeted advertising, AI appointment setting, and trained follow-up systems to generate qualified leads AND nurture and close them."</div>
+</div>
+
+<h2><span class="num">4</span> Frame</h2>
+<div class="card card-warn">
+<div class="script">"We can't help everyone. Not everyone is ready. This call is a deeper dive to see if there's alignment. If there is, I'll show you how to get started today. If not, I'll explain why and give my honest advice. Sound fair?"</div>
+<ul>
+  <li>Sets you as the selector, not the seller</li>
+  <li>Eliminates "let me think about it" &mdash; decision happens today</li>
+</ul>
+</div>
+
+<h2><span class="num">5</span> Discovery</h2>
+<div class="card">
+<h3>Draw Out These 3 Things</h3>
+<ul>
+  <li><strong>Problem/Goal awareness</strong> &mdash; What are they trying to solve? Where do they want to be?</li>
+  <li><strong>Timeline + Numbers</strong> &mdash; How long have they been stuck? What have they spent? How many deals are they doing now vs. what they want?</li>
+  <li><strong>Marketing complexity</strong> &mdash; Get them to acknowledge they can't just "throw up ads." If it were easy, they'd have done it already</li>
+</ul>
+</div>
+
+<hr class="divider">
+
+<h2><span class="num">6</span> Education Pitch &mdash; Sell the System</h2>
+
+<div class="two-col">
+<div class="card card-accent">
+<h3>Mechanism 1: Problem State Ads</h3>
+<ul>
+  <li><strong>80% of homeowners</strong> are in a PROBLEM STATE (need to sell, relocate, downsize, divorce, inheritance)</li>
+  <li>Only <strong>3% of realtors</strong> target these people</li>
+  <li>Everyone else competes for the 3-7% in SOLUTION STATE (actively searching Zillow)</li>
+  <li>Education-angle headlines: <em>"Why 2025 is the best time to downsize"</em></li>
+  <li>You're fishing where nobody else is fishing</li>
+</ul>
+</div>
+<div class="card card-accent">
+<h3>Mechanism 2: Pre-Nurture System</h3>
+<ul>
+  <li>Education funnel builds trust BEFORE they talk to the agent</li>
+  <li>Triple qualification process &mdash; by the time they get on the phone, they're pre-sold</li>
+  <li>You're the ONLY agent they're talking to (no Zillow lead shared with 10 agents)</li>
+  <li>Exclusive appointments, not shared leads</li>
+</ul>
+</div>
+</div>
+
+<div class="card card-green">
+<h3>Mechanism 3: AI Follow-Up Engine</h3>
+<ul>
+  <li>Gets leads OFF Facebook fast &mdash; prevents competitors from retargeting them</li>
+  <li><strong>6 specialized AI agents</strong> handle each stage: qualification, booking, reminders, follow-up, re-engagement, nurture</li>
+  <li>Old leads compound into next month &mdash; your pipeline grows, it never starts from zero</li>
+  <li>Works 24/7 while you focus on closing</li>
+</ul>
+</div>
+
+<!-- ======================== PAGE BREAK FOR PRINT ======================== -->
+<div class="page-break"></div>
+
+<h2><span class="num">7</span> Push Away</h2>
+<div class="card card-warn">
+<div class="script">"I can't close deals for you. Off $1K-$1.5K ad spend we typically generate enough leads for 3-4 home appointments, 1-2 close. How confident are you in closing these types of leads?"</div>
+<ul>
+  <li>Forces them to self-qualify</li>
+  <li>Creates ownership &mdash; you bring the leads, they bring the skill</li>
+  <li>If they hesitate here, this is a coaching moment, not a disqualifier</li>
+</ul>
+</div>
+
+<h2><span class="num">8</span> Transition</h2>
+<div class="card">
+<div class="script">"Does this excite you? What were the 2-3 biggest clicks for you?"</div>
+<div class="script">"Any parts that make you feel uncertain?"</div>
+<ul>
+  <li>Gets them to verbalize value (they sell themselves)</li>
+  <li>Surfaces hidden objections before the close</li>
+</ul>
+</div>
+
+<h2><span class="num">9</span> Pitch 2 &mdash; Deliverables, Timeline, Close</h2>
+<div class="card card-green">
+<ul>
+  <li><strong>Onboarding</strong> + ad account access setup</li>
+  <li><strong>Reactivation campaign first</strong> &mdash; mine their existing database for quick wins</li>
+  <li><strong>Ads launched Week 1</strong> &mdash; first leads within 3 days</li>
+  <li><strong>Weekly check-ins</strong> to review performance and optimize</li>
+  <li><strong>Follow-up agents</strong> stay on leads that aren't ready now (compounding pipeline)</li>
+</ul>
+<div class="script">"Any questions, or are you ready to rock?"</div>
+</div>
+
+<hr class="divider">
+
+<h2><span class="num">10</span> Objection Handling &mdash; CIVR Framework</h2>
+
+<div class="card card-accent">
+<h3>The 4-Step Loop</h3>
+<ul>
+  <li><strong>C &mdash; Clarify:</strong> "Help me understand what you mean by that"</li>
+  <li><strong>I &mdash; Isolate:</strong> "Is that the only thing holding you back, or is there something else?"</li>
+  <li><strong>V &mdash; Validate:</strong> "That makes total sense. A lot of our best clients said the same thing"</li>
+  <li><strong>R &mdash; Reframe:</strong> Redirect to value, timeline urgency, or cost of inaction</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>5 Areas of Confusion That Block Closes</h3>
+<div class="two-col">
+<ul>
+  <li><strong>Goal clarity</strong> &mdash; They don't know what they actually want. Help them define it</li>
+  <li><strong>Vehicle buy-in</strong> &mdash; They don't believe paid lead gen works. Use the Problem State vs. Solution State education</li>
+  <li><strong>Delivery method trust</strong> &mdash; They've been burned by agencies before. Explain the AI system difference</li>
+</ul>
+<ul>
+  <li><strong>Personal trust</strong> &mdash; They don't trust YOU yet. Use testimonials, case studies, specificity</li>
+  <li><strong>Value vs. price</strong> &mdash; They think it's expensive. Reframe: what's one closed home worth? $8K-$15K commission vs. your monthly investment</li>
+</ul>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- ======================== POST-CALL ======================== -->
+
+<h2><span class="num">+</span> After the Call</h2>
+<div class="card card-warn">
+<ul>
+  <li><strong>Follow up with value, not desperation.</strong> Send a case study, a relevant insight, a resource</li>
+  <li><strong>Stay unemotional.</strong> Trust the process. Not every call closes same-day</li>
+  <li><strong>Some people buy later.</strong> Good product + good offer = they come back. Your job is to stay top of mind</li>
+  <li>Never chase. Position yourself as the opportunity they either take or miss</li>
+</ul>
+</div>
+
+<div class="footer">
+  Exclusive Brokerage / Elevated AI Solutions &mdash; Closer SOP &mdash; Internal Use Only
+</div>
+
+</body>
+</html>

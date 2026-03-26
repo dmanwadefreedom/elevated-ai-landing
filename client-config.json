@@ -1,0 +1,215 @@
+{
+  "client": {
+    "id": "conor",
+    "name": "Conor Drake",
+    "company": "Elevated AI Solutions",
+    "logo": null,
+    "email": "",
+    "phone": "+1 (209) 256-0510",
+    "niche": "Real Estate Brokers/Agents — Lead Gen",
+    "model": "Pay-Per-Appointment",
+    "timezone": "America/Los_Angeles",
+    "startDate": "2026-01-15",
+    "meetingSchedule": "Mondays 9:30 PM BKK / 7:30 AM PST",
+    "status": "active"
+  },
+  "revenue": {
+    "mrr": 0,
+    "breakdown": [],
+    "label": "Agency Revenue (from RE clients)",
+    "clientsActive": 0,
+    "clientsTarget": 5,
+    "revenueTarget": 15000,
+    "pricing": {
+      "setupFee": "TBD — Doug advising on pricing model",
+      "perAppointment": "TBD — varies by property value ($200K homes vs $1M properties)",
+      "note": "Clients pay their own ad spend. Pay-per-appointment on top."
+    },
+    "costs": [
+      { "label": "Instantly (cold email)", "amount": 400, "status": "dead — requesting $800 refund" },
+      { "label": "Apps & AI Infrastructure", "amount": 733, "status": "active" },
+      { "label": "Consulting + Lead Gen Systems", "amount": 800, "status": "active" }
+    ],
+    "monthlyCosts": 1533,
+    "note": "Instantly channel dead. Pivoting to Meta Ads via Cortana AI Accelerator. James + David managing ad setup. Doug advising on pricing."
+  },
+  "pipeline": {
+    "stages": [
+      { "name": "Ad Leads", "count": 0, "color": "#64748B" },
+      { "name": "Nurtured", "count": 0, "color": "#3B82F6" },
+      { "name": "Qualified", "count": 0, "color": "#8B5CF6" },
+      { "name": "Booked", "count": 0, "color": "#F59E0B" },
+      { "name": "Showed", "count": 0, "color": "#22C55E" },
+      { "name": "Closed", "count": 0, "color": "#10B981" }
+    ],
+    "note": "Pipeline reset for Meta Ads launch. Old Instantly pipeline (621 cold leads) abandoned."
+  },
+  "campaigns": [
+    {
+      "name": "Meta Ads — RE Brokers/Agents",
+      "platform": "Meta (via Cortana AI Accelerator)",
+      "status": "launching",
+      "statusNote": "10-12 ads ready. James uploading to Meta. Copy being fine-tuned. Hit go by end of week.",
+      "leads": 0,
+      "sent": null,
+      "opened": null,
+      "replied": null,
+      "booked": 0,
+      "spend": 0,
+      "startDate": "2026-03-28",
+      "strategy": "Problem-state marketing: target people OPEN to selling but not actively looking for a realtor. Education angle, not solution-state. 80% of market with 3% of realtors focused on it."
+    },
+    {
+      "name": "LinkedIn Prospecting",
+      "platform": "15element",
+      "status": "warning",
+      "statusNote": "30+ interested, 0 booked — on hold while Meta ads ramp up",
+      "leads": 600,
+      "sent": 200,
+      "opened": null,
+      "replied": 30,
+      "booked": 0,
+      "spend": 0,
+      "startDate": "2026-02-15"
+    },
+    {
+      "name": "RE Brokers Cold Email (DEAD)",
+      "platform": "Instantly",
+      "status": "dead",
+      "statusNote": "AIAA failed all 3 campaigns. 0% deliverability. Requesting $800 refund. Channel abandoned.",
+      "leads": 621,
+      "sent": 0,
+      "opened": 0,
+      "replied": 0,
+      "booked": 0,
+      "spend": 800,
+      "startDate": "2026-03-10"
+    },
+    {
+      "name": "Organic Content Engine",
+      "platform": "Instagram / LinkedIn / TikTok",
+      "status": "planned",
+      "statusNote": "Content engine to feed social channels that ads run from. Ads need content on profiles to convert.",
+      "leads": 0,
+      "sent": null,
+      "opened": null,
+      "replied": null,
+      "booked": 0,
+      "spend": 0,
+      "startDate": null
+    }
+  ],
+  "salesProcess": {
+    "source": "Cortana AI Accelerator (Skool: b2b-renaissance-4996)",
+    "closerSOP": "/cortana-accelerator/closer-sop.html",
+    "closingDoc": "Cortana - CLOSING PROCESS_.docx",
+    "trainingVideos": "~2 hours on Skool (two sales processes from co-founders)",
+    "framework": "Connect → Context → Intro → Frame → Discovery → Education Pitch → Push Away → Transition → Deliverables/Close → Objections (CIVR)",
+    "keyInsight": "Problem-state marketing (80% of market, 3% competition) vs Solution-state (3-7% of market, 97% competition). Education angle headlines. AI agents get leads OFF Facebook fast to prevent competitor retargeting.",
+    "aiAgents": [
+      "Appointment Setting Agent (SMS)",
+      "Database Reactivation Agent (SMS)",
+      "No Show Recovery Agent (SMS)",
+      "Nurture & Rescheduling Agent (SMS)",
+      "Abandoned Cart Recovery Agent (SMS)"
+    ]
+  },
+  "deliverables": [
+    { "name": "Closer SOP (2-page)", "status": "delivered", "date": "2026-03-26", "notes": "Condensed from Cortana course. closer-sop.html" },
+    { "name": "Meta Ads — 10-12 Creatives", "status": "in-progress", "date": null, "notes": "James uploading. Conor + David fine-tuning copy." },
+    { "name": "GHL Booking Link", "status": "in-progress", "date": null, "notes": "Replace Conor's Calendly in ads. Needs GHL calendar setup." },
+    { "name": "Meta Ads API → Dashboard", "status": "in-progress", "date": null, "notes": "Connect Conor's ad account to client portal." },
+    { "name": "Landing Page (Qualification)", "status": "in-progress", "date": null, "notes": "Thank you page with FAQ video + VSL per Cortana process" },
+    { "name": "Pre-Call Doc", "status": "delivered", "date": "2026-03-26", "notes": "Sales letter at pre-call-doc.html. Cortana framework. Text link after booking." },
+    { "name": "AI Appointment Setting Agents", "status": "planned", "date": null, "notes": "6 SMS agents: appointment, reactivation, no-show, nurture, abandoned cart" },
+    { "name": "Client Dashboard", "status": "delivered", "date": "2026-03-25", "notes": "Live at client-portal/clients/conor/. Needs API feeds." },
+    { "name": "Shopify Integration", "status": "planned", "date": null, "notes": "Dylan will set Conor up with programs — doesn't need to be involved daily" },
+    { "name": "Content Engine Setup", "status": "planned", "date": null, "notes": "Daily posting across social channels — profiles need content before ads convert" }
+  ],
+  "goals": {
+    "weekly": [
+      { "goal": "Hit GO on Meta ads (10-12 creatives uploaded)", "status": "in-progress", "priority": "critical" },
+      { "goal": "GHL booking link live (replace Calendly)", "status": "pending", "priority": "critical" },
+      { "goal": "Closer assigned (Mo, Dial a Closer, or other)", "status": "pending", "priority": "critical" },
+      { "goal": "Pricing confirmed (Doug advising)", "status": "pending", "priority": "high" },
+      { "goal": "Connect Meta Ads API to dashboard", "status": "pending", "priority": "high" }
+    ],
+    "monthly": [
+      { "goal": "10 qualified calls booked", "current": 0, "target": 10 },
+      { "goal": "First paying client closed", "current": 0, "target": 2 },
+      { "goal": "Meta ads ROI positive", "current": 0, "target": 1 },
+      { "goal": "30 content pieces published", "current": 0, "target": 30 }
+    ]
+  },
+  "contentCalendar": [
+    { "date": "2026-03-26", "type": "post", "channel": "Instagram", "topic": "AI lead gen for RE agents — system screenshot", "status": "planned" },
+    { "date": "2026-03-26", "type": "post", "channel": "LinkedIn", "topic": "Why shared leads are killing your business", "status": "planned" },
+    { "date": "2026-03-27", "type": "video", "channel": "TikTok", "topic": "UGC: How we booked 10 appointments in 30 days", "status": "planned" },
+    { "date": "2026-03-28", "type": "post", "channel": "Facebook", "topic": "Your AI sales team works 24/7 — here's proof", "status": "planned" },
+    { "date": "2026-03-29", "type": "video", "channel": "Instagram", "topic": "UGC: Stop buying leads that 10 other agents get", "status": "planned" },
+    { "date": "2026-03-30", "type": "post", "channel": "LinkedIn", "topic": "Only accepting 5 agents per market — here's why", "status": "planned" },
+    { "date": "2026-03-31", "type": "video", "channel": "TikTok", "topic": "UGC: What if your phone rang with qualified buyers?", "status": "planned" }
+  ],
+  "meetings": [
+    { "date": "2026-03-25", "duration": "24 min", "summary": "PIVOT — Meta Ads go-live. Cortana AI Accelerator course. James uploading 10-12 ads. Need closer + pricing from Doug. Dylan showed War Room dashboard.", "actionItems": ["Watch Cortana course (~2 hrs)", "Create 2-page closer SOP", "Create GHL booking link (replace Calendly)", "Connect Meta Ads API to dashboard", "Get pricing from Doug", "Find closer (Mo or Dial a Closer)", "Ping Conor for 30-40 min follow-up"], "fathom": "https://fathom.video/share/L5otVBH9ZYLQ2Yh_ywqJtHAmmzgdTtu9" },
+    { "date": "2026-03-23", "duration": "45 min", "summary": "CashClaw + UGC Engine demo, launch strategy review", "actionItems": ["Review CashClaw for agency", "Align with Sam/Alberto on white paper"] },
+    { "date": "2026-03-17", "duration": "60 min", "summary": "Full strategy — LinkedIn fix, Instantly rebuild, landing page needed", "actionItems": ["Simple landing page", "Kill Instantly if no results", "Add Jay as closer"] },
+    { "date": "2026-03-17", "duration": "8 min", "summary": "Quick: UGC for Shopify, kill Instantly if dead", "actionItems": ["Hook CashClaw to Shopify", "Build content plan"] },
+    { "date": "2026-03-10", "duration": "16 min", "summary": "Claude Code demo, LegalShield plan, Cortana delays", "actionItems": ["Fix voice agent 24h", "Send 5 LegalShield leads", "Get LinkedIn running"] }
+  ],
+  "blockers": [
+    { "severity": "critical", "title": "No closer assigned", "detail": "Ads about to go live but nobody to take qualification calls. Mo (trusted contact) or Dial a Closer. Need someone before hitting go.", "since": "2026-03-01" },
+    { "severity": "critical", "title": "Pricing not finalized", "detail": "Doug advising on per-appointment rates. Varies by property value. Need this before calls start.", "since": "2026-03-25" },
+    { "severity": "warning", "title": "Calendly in ads — needs GHL swap", "detail": "Conor's Calendly link currently in ad creatives. Need GHL booking link with round-robin for closers.", "since": "2026-03-25" },
+    { "severity": "warning", "title": "Empty social profiles", "detail": "Ads link to profiles with no content. Prospects bounce. Need content engine running.", "since": "2026-01-15" },
+    { "severity": "info", "title": "Instantly requesting refund", "detail": "AIAA failed all campaigns. $800 refund requested. Cold email channel abandoned.", "since": "2026-03-25" },
+    { "severity": "info", "title": "Shopify not connected", "detail": "Need API access. Dylan will set up with programs independently.", "since": "2026-03-17" }
+  ],
+  "apis": [
+    { "id": "meta", "label": "Meta Ads (Cortana)", "color": "#1877F2", "status": "needs-setup", "note": "Have META_ACCESS_TOKEN in .env. Need Conor's ad account ID to pull metrics.", "keyName": "META_ACCESS_TOKEN" },
+    { "id": "ghl", "label": "GoHighLevel", "color": "#F59E0B", "status": "needs-refresh", "note": "CONOR_GHL_API_KEY exists but JWT may be expired. Need to validate for booking link.", "keyName": "CONOR_GHL_API_KEY" },
+    { "id": "shopify", "label": "Shopify Store", "color": "#96BF48", "status": "no-access", "note": "Need store URL + Admin API key from Conor", "keyName": null },
+    { "id": "linkedin", "label": "15element (LinkedIn)", "color": "#0A66C2", "status": "active", "note": "prospecting.15element.ai — login: dman_101@yahoo.com. On hold while Meta ramps.", "keyName": null },
+    { "id": "instantly", "label": "Instantly (DEAD)", "color": "#6366F1", "status": "dead", "note": "AIAA failed. Requesting $800 refund. Channel abandoned.", "keyName": "INSTANTLY_API_KEY" },
+    { "id": "aiaa", "label": "AI Acquisition (AIAA)", "color": "#8B5CF6", "status": "active", "note": "app.aiacquisition.com — Conor's primary CRM. DO NOT access programmatically.", "keyName": null },
+    { "id": "twilio", "label": "Twilio (Shared)", "color": "#F22F46", "status": "active", "note": "+1(512)967-0954 — Conor's account, Dylan uses for LegalShield VAPI.", "keyName": null },
+    { "id": "cortana", "label": "Cortana AI Accelerator", "color": "#00A4EF", "status": "active", "note": "Skool course + ad management. James + David co-founders. Doug on pricing.", "keyName": null },
+    { "id": "telegram", "label": "Telegram Bot", "color": "#26A5E4", "status": "active", "note": "Conor's bot token in .env", "keyName": "CONOR_TG_TOKEN" }
+  ],
+  "team": {
+    "cortana": [
+      { "name": "James", "role": "Meta Ads Manager", "note": "Uploading 10-12 ad creatives. Managing ad accounts." },
+      { "name": "David", "role": "Co-Founder / Sales Process", "note": "Structured sales process training. Fine-tuning ad copy with Conor." },
+      { "name": "Doug", "role": "Pricing Advisor", "note": "Advising on per-appointment rates for RE brokers/agents." }
+    ],
+    "closer": {
+      "status": "unassigned",
+      "candidates": ["Mo (trusted contact)", "Dial a Closer (marketplace)"],
+      "note": "Need someone before ads go live. Will plug into Cortana training + closer SOP."
+    }
+  },
+  "onboarding": {
+    "completedSteps": [
+      "Initial strategy call",
+      "Lead list built (621 RE brokers — for cold email, now deprecated)",
+      "Cold email campaign created (failed — abandoned)",
+      "LinkedIn prospecting started",
+      "Client dashboard built",
+      "Closer SOP created (from Cortana course)",
+      "Cortana AI Accelerator course access (Skool)"
+    ],
+    "pendingSteps": [
+      "Meta ads go live (10-12 creatives uploaded by James)",
+      "GHL booking link (replace Calendly)",
+      "Closer assigned and trained",
+      "Pricing finalized (Doug)",
+      "Meta Ads API connected to dashboard",
+      "Landing page with FAQ video + VSL (Cortana thank-you page framework)",
+      "Pre-call doc (text after booking)",
+      "AI SMS agents deployed (appointment, reactivation, no-show, nurture, abandoned cart)",
+      "Content engine running (social profiles need content)",
+      "Shopify API connected",
+      "First client closed"
+    ]
+  }
+}

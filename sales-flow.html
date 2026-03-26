@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales System Flow — Elevated AI Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            surface: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
+            accent: { DEFAULT: '#22C55E', light: '#4ADE80', dim: '#16A34A' },
+            warn: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #020617; color: #f8fafc; overflow-x: hidden; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+    .glass-light { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); }
+    .glass-hover:hover { background: rgba(30, 41, 59, 0.7); border-color: rgba(255,255,255,0.12); }
+
+    .gradient-mesh {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(34, 197, 94, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 80% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 300px at 60% 30%, rgba(139, 92, 246, 0.03) 0%, transparent 70%);
+    }
+
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 9999px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+    .badge-green { background: rgba(34,197,94,0.15); color: #86EFAC; }
+    .badge-yellow { background: rgba(245,158,11,0.15); color: #FCD34D; }
+    .badge-red { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .badge-blue { background: rgba(59,130,246,0.15); color: #93C5FD; }
+
+    .stage-card {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .stage-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .connector {
+      position: relative;
+    }
+    .connector::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -28px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 28px;
+      background: linear-gradient(to bottom, rgba(34,197,94,0.4), rgba(34,197,94,0.1));
+    }
+    .connector-arrow::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -36px;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid rgba(34,197,94,0.35);
+    }
+
+    .flow-line {
+      width: 2px;
+      height: 32px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, rgba(34,197,94,0.5), rgba(34,197,94,0.15));
+      position: relative;
+    }
+    .flow-line::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid rgba(34,197,94,0.4);
+    }
+
+    .stage-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: rgba(248,250,252,0.6);
+      line-height: 1.4;
+    }
+    .detail-item svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .blocker-card {
+      transition: all 0.3s ease;
+    }
+    .blocker-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .team-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .link-card {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .link-card:hover {
+      background: rgba(30, 41, 59, 0.7);
+      border-color: rgba(34,197,94,0.3);
+      transform: translateY(-1px);
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-in { animation: fadeUp 0.5s ease forwards; }
+    .delay-1 { animation-delay: 0.05s; opacity: 0; }
+    .delay-2 { animation-delay: 0.1s; opacity: 0; }
+    .delay-3 { animation-delay: 0.15s; opacity: 0; }
+    .delay-4 { animation-delay: 0.2s; opacity: 0; }
+    .delay-5 { animation-delay: 0.25s; opacity: 0; }
+    .delay-6 { animation-delay: 0.3s; opacity: 0; }
+    .delay-7 { animation-delay: 0.35s; opacity: 0; }
+    .delay-8 { animation-delay: 0.4s; opacity: 0; }
+    .delay-9 { animation-delay: 0.45s; opacity: 0; }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 8px rgba(34,197,94,0.2); }
+      50% { box-shadow: 0 0 20px rgba(34,197,94,0.4); }
+    }
+    .pulse-green { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-in, .stage-card, .blocker-card, .link-card { animation: none !important; transition: none !important; opacity: 1 !important; }
+      .pulse-green { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-mesh"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20">
+
+    <!-- HEADER -->
+    <header class="text-center mb-8 animate-in">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-emerald-700 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Elevated AI Solutions</h1>
+      </div>
+      <p class="text-sm text-white/40 font-medium tracking-wide uppercase">Sales System Flow</p>
+      <p class="text-xs text-white/25 mt-1">Real Estate Brokers/Agents &mdash; Pay-Per-Appointment Lead Gen</p>
+    </header>
+
+    <!-- PROGRESS BAR -->
+    <div class="glass rounded-2xl p-5 mb-10 animate-in delay-1">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="text-sm font-semibold text-white/80">System Readiness</span>
+        </div>
+        <span class="text-sm font-bold text-accent">2 / 9 <span class="text-white/30 font-normal">stages ready</span></span>
+      </div>
+      <div class="w-full h-3 rounded-full bg-white/5 overflow-hidden">
+        <div class="h-full rounded-full bg-gradient-to-r from-accent/80 to-accent" style="width: 22.2%; transition: width 1s ease;"></div>
+      </div>
+      <div class="flex items-center gap-4 mt-3 text-xs text-white/40">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-accent"></span>
+          Closer SOP + Meta Ads launching
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-white/15"></span>
+          7 stages remaining
+        </span>
+      </div>
+    </div>
+
+    <!-- FLOW STAGES -->
+    <div class="space-y-0">
+
+      <!-- STAGE 1: META ADS -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-1">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 text-yellow-400 border border-yellow-500/20">1</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Meta Ads</h3>
+              </div>
+              <span class="text-xs text-white/30">Top of Funnel</span>
+              <span class="badge badge-yellow ml-auto">Launching</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>10-12 ad creatives ready to upload</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Strategy: <strong class="text-white/80">PROBLEM-STATE marketing</strong> &mdash; targeting 80% of market where only 3% of realtors compete</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>"Why 2025 is the best time to downsize" education angle</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span class="text-yellow-300/70">James uploading ads to Meta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 2: LANDING PAGE -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-2">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-red-500/20 to-red-600/10 text-red-400 border border-red-500/20">2</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Landing Page</h3>
+              </div>
+              <span class="text-xs text-white/30">Qualification</span>
+              <span class="badge badge-red ml-auto">Needs Build</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span>Qualification form to filter tire-kickers</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg>
+                <span>Collect: name, email, phone, market, volume, current marketing</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Triple qualification friction &mdash; only intent-driven leads get through</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 3: THANK YOU PAGE -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-3">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-red-500/20 to-red-600/10 text-red-400 border border-red-500/20">3</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Thank You Page</h3>
+              </div>
+              <span class="text-xs text-white/30">Pre-Sell</span>
+              <span class="badge badge-red ml-auto">Needs Build</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                <span>FAQ Video answering common objections (pricing, guarantee, how it works)</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                <span>VSL-style explainer video</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Handles objections <strong class="text-white/80">BEFORE</strong> the call</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 4: THE DOC -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-4">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-red-500/20 to-red-600/10 text-red-400 border border-red-500/20">4</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">The Doc</h3>
+              </div>
+              <span class="text-xs text-white/30">Trust Builder</span>
+              <span class="badge badge-red ml-auto">Needs Build</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Sent via text after booking</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Written sales letter: what we do, how, why, results</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span class="italic text-white/50">"People who read this doc felt stupid not buying"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 5: BOOT CAMP -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-5">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-blue-500/20 to-blue-600/10 text-blue-400 border border-blue-500/20">5</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Boot Camp + Touchpoints</h3>
+              </div>
+              <span class="text-xs text-white/30">Warm Up</span>
+              <span class="badge badge-blue ml-auto">Planned</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <span>Series of educational content sent pre-call</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Multiple channels: SMS + email drips</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Keeps leads warm and engaged before the sales call</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 6: AI AGENTS -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-6">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-red-500/20 to-red-600/10 text-red-400 border border-red-500/20">6</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="3"/><path d="M7 22v-1"/><path d="M17 22v-1"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">AI Agents</h3>
+              </div>
+              <span class="text-xs text-white/30">Automation Layer</span>
+              <span class="badge badge-red ml-auto">Needs GHL Key</span>
+            </div>
+            <p class="text-xs text-white/40 mt-2 mb-3 italic">"6 specialized AI agents, not 1 mediocre one"</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div class="glass-light rounded-lg px-3 py-2.5 flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+                </div>
+                <span class="text-xs text-white/70">Appointment Setting</span>
+              </div>
+              <div class="glass-light rounded-lg px-3 py-2.5 flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                </div>
+                <span class="text-xs text-white/70">Database Reactivation</span>
+              </div>
+              <div class="glass-light rounded-lg px-3 py-2.5 flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md bg-yellow-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <span class="text-xs text-white/70">No Show Recovery</span>
+              </div>
+              <div class="glass-light rounded-lg px-3 py-2.5 flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <span class="text-xs text-white/70">Nurture + Rescheduling</span>
+              </div>
+              <div class="glass-light rounded-lg px-3 py-2.5 flex items-center gap-2.5 sm:col-span-2">
+                <div class="w-6 h-6 rounded-md bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                </div>
+                <span class="text-xs text-white/70">Abandoned Cart Recovery</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 7: SALES CALL -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 pulse-green animate-in delay-7">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-accent/30 to-emerald-600/10 text-accent border border-accent/30">7</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Sales Call</h3>
+              </div>
+              <span class="text-xs text-white/30">Close</span>
+              <span class="badge badge-green ml-auto">Closer SOP Ready</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Framework: <strong class="text-white/80">Connect &rarr; Context &rarr; Intro &rarr; Frame &rarr; Discovery &rarr; Education Pitch &rarr; Push Away &rarr; Transition &rarr; Deliverables/Close &rarr; Objections (CIVR)</strong></span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                <a href="closer-sop.html" class="text-accent hover:text-accent-light underline underline-offset-2 decoration-accent/30">View Closer SOP</a>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+                <span>Closer needed: <strong class="text-yellow-300/80">Mo</strong> or <strong class="text-yellow-300/80">Dial a Closer</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 8: FOLLOW-UP -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-8">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-blue-500/20 to-blue-600/10 text-blue-400 border border-blue-500/20">8</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Follow-Up</h3>
+              </div>
+              <span class="text-xs text-white/30">Post-Call</span>
+              <span class="badge badge-blue ml-auto">Planned</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span>Value-based follow-up (not desperate)</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span>AI agents compound old leads into next month</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span class="italic text-white/50">"Trust the process &mdash; don't get emotional"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-line"></div>
+
+      <!-- STAGE 9: ONBOARDING -->
+      <div class="stage-card glass rounded-2xl p-5 sm:p-6 animate-in delay-9">
+        <div class="flex items-start gap-4">
+          <div class="stage-number bg-gradient-to-br from-blue-500/20 to-blue-600/10 text-blue-400 border border-blue-500/20">9</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <h3 class="font-bold text-white text-sm sm:text-base">Onboarding + Delivery</h3>
+              </div>
+              <span class="text-xs text-white/30">Fulfillment</span>
+              <span class="badge badge-blue ml-auto">Planned</span>
+            </div>
+            <div class="space-y-2 mt-3">
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Reactivation campaign first (quick wins from existing database)</span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Ads launched <strong class="text-white/80">week 1</strong></span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>First leads within <strong class="text-white/80">3 days</strong></span>
+              </div>
+              <div class="detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>Weekly check-ins to optimize</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end flow stages -->
+
+    <!-- DIVIDER -->
+    <div class="my-12 flex items-center gap-4">
+      <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <span class="text-xs text-white/20 uppercase tracking-widest font-semibold">System Status</span>
+      <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    </div>
+
+    <!-- BLOCKERS -->
+    <section class="mb-10 animate-in">
+      <div class="flex items-center gap-2 mb-4">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <h2 class="text-lg font-bold text-white">Blockers</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Critical: No closer -->
+        <div class="blocker-card glass rounded-xl p-4 border-l-2 border-red-500">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge badge-red">Critical</span>
+            <span class="text-sm font-semibold text-white">No closer assigned</span>
+          </div>
+          <p class="text-xs text-white/40 leading-relaxed">Ads about to go live but nobody to take qualification calls. Need Mo or Dial a Closer before hitting go.</p>
+        </div>
+        <!-- Critical: Pricing -->
+        <div class="blocker-card glass rounded-xl p-4 border-l-2 border-red-500">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge badge-red">Critical</span>
+            <span class="text-sm font-semibold text-white">Pricing TBD from Doug</span>
+          </div>
+          <p class="text-xs text-white/40 leading-relaxed">Per-appointment rates not finalized. Varies by property value. Need this locked before calls start.</p>
+        </div>
+        <!-- Warning: GHL -->
+        <div class="blocker-card glass rounded-xl p-4 border-l-2 border-yellow-500">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge badge-yellow">Warning</span>
+            <span class="text-sm font-semibold text-white">GHL key expired</span>
+          </div>
+          <p class="text-xs text-white/40 leading-relaxed">Conor's GHL API key (JWT) may be expired. Needed for booking link, AI agents, and CRM automation.</p>
+        </div>
+        <!-- Warning: Social -->
+        <div class="blocker-card glass rounded-xl p-4 border-l-2 border-yellow-500">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge badge-yellow">Warning</span>
+            <span class="text-sm font-semibold text-white">Empty social profiles</span>
+          </div>
+          <p class="text-xs text-white/40 leading-relaxed">Ads link to profiles with no content. Prospects check socials and bounce. Content engine needs to run.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="mb-10 animate-in">
+      <div class="flex items-center gap-2 mb-4">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <h2 class="text-lg font-bold text-white">Team</h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <!-- James -->
+        <div class="glass rounded-xl p-4 text-center">
+          <div class="team-avatar bg-gradient-to-br from-blue-500/30 to-blue-600/10 text-blue-400 mx-auto mb-2 border border-blue-500/20">J</div>
+          <p class="text-sm font-semibold text-white">James</p>
+          <p class="text-xs text-white/40 mt-0.5">Meta Ads</p>
+          <span class="badge badge-blue mt-2 text-[0.6rem]">Ads Manager</span>
+        </div>
+        <!-- David -->
+        <div class="glass rounded-xl p-4 text-center">
+          <div class="team-avatar bg-gradient-to-br from-purple-500/30 to-purple-600/10 text-purple-400 mx-auto mb-2 border border-purple-500/20">D</div>
+          <p class="text-sm font-semibold text-white">David</p>
+          <p class="text-xs text-white/40 mt-0.5">Sales Process</p>
+          <span class="badge badge-blue mt-2 text-[0.6rem]">Co-Founder</span>
+        </div>
+        <!-- Doug -->
+        <div class="glass rounded-xl p-4 text-center">
+          <div class="team-avatar bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 text-yellow-400 mx-auto mb-2 border border-yellow-500/20">D</div>
+          <p class="text-sm font-semibold text-white">Doug</p>
+          <p class="text-xs text-white/40 mt-0.5">Pricing</p>
+          <span class="badge badge-yellow mt-2 text-[0.6rem]">Advisor</span>
+        </div>
+        <!-- Closer -->
+        <div class="glass rounded-xl p-4 text-center opacity-60">
+          <div class="team-avatar bg-gradient-to-br from-red-500/30 to-red-600/10 text-red-400 mx-auto mb-2 border border-red-500/20 border-dashed">?</div>
+          <p class="text-sm font-semibold text-white">Closer</p>
+          <p class="text-xs text-white/40 mt-0.5">Sales Calls</p>
+          <span class="badge badge-red mt-2 text-[0.6rem]">TBD</span>
+        </div>
+        <!-- Dylan -->
+        <div class="glass rounded-xl p-4 text-center">
+          <div class="team-avatar bg-gradient-to-br from-accent/30 to-emerald-600/10 text-accent mx-auto mb-2 border border-accent/20">DE</div>
+          <p class="text-sm font-semibold text-white">Dylan</p>
+          <p class="text-xs text-white/40 mt-0.5">Systems + AI</p>
+          <span class="badge badge-green mt-2 text-[0.6rem]">Lead</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK LINKS -->
+    <section class="animate-in">
+      <div class="flex items-center gap-2 mb-4">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <h2 class="text-lg font-bold text-white">Quick Links</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <a href="closer-sop.html" class="link-card glass rounded-xl p-4 flex items-center gap-3 no-underline">
+          <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-white">Closer SOP</p>
+            <p class="text-xs text-white/30">2-page sales framework</p>
+          </div>
+          <svg class="ml-auto flex-shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="https://www.skool.com/b2b-renaissance-4996/classroom" target="_blank" rel="noopener" class="link-card glass rounded-xl p-4 flex items-center gap-3 no-underline">
+          <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-white">Cortana Course</p>
+            <p class="text-xs text-white/30">Skool classroom</p>
+          </div>
+          <svg class="ml-auto flex-shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="https://fathom.video/share/L5otVBH9ZYLQ2Yh_ywqJtHAmmzgdTtu9" target="_blank" rel="noopener" class="link-card glass rounded-xl p-4 flex items-center gap-3 no-underline">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-white">Fathom Recording</p>
+            <p class="text-xs text-white/30">March 25 call</p>
+          </div>
+          <svg class="ml-auto flex-shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mt-16 text-center">
+      <div class="h-px bg-gradient-to-r from-transparent via-white/5 to-transparent mb-6"></div>
+      <p class="text-xs text-white/15">Elevated AI Solutions &mdash; Conor Drake &bull; Built by Dylan Ewing</p>
+    </footer>
+
+  </div>
+</body>
+</html>

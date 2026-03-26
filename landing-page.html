@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exclusive Seller Appointments for Real Estate Agents | Elevated AI</title>
+  <meta name="description" content="Get Exclusive, Qualified Seller Appointments — Without Competing With Every Other Agent In Town. AI-powered marketing finds homeowners open to selling before they talk to anyone else.">
+  <meta property="og:title" content="Exclusive Seller Appointments for Real Estate Agents | Elevated AI">
+  <meta property="og:description" content="We use AI-powered marketing to find homeowners who are OPEN to selling — before they talk to anyone else. You only pay when a qualified appointment shows up.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            surface: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
+            accent: { DEFAULT: '#22C55E', light: '#4ADE80', dim: '#16A34A' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #020617; color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    .gradient-mesh {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(34, 197, 94, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 80% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 300px at 60% 30%, rgba(139, 92, 246, 0.03) 0%, transparent 70%);
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+
+    .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.15), 0 0 60px rgba(34, 197, 94, 0.05); }
+
+    .cta-btn {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 44px;
+      min-width: 44px;
+    }
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.25), 0 0 80px rgba(34, 197, 94, 0.1);
+    }
+    .cta-btn:active { transform: translateY(0); }
+
+    .form-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #f8fafc;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 44px;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+    }
+    .form-input::placeholder { color: rgba(248, 250, 252, 0.35); }
+    .form-input.error { border-color: #EF4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15); }
+
+    select.form-input { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    select.form-input option { background: #0f172a; color: #f8fafc; }
+
+    .error-msg { color: #EF4444; font-size: 0.75rem; margin-top: 4px; display: none; }
+    .error-msg.visible { display: block; }
+
+    .page-transition { transition: opacity 0.4s ease, transform 0.4s ease; }
+    .page-hidden { opacity: 0; transform: translateY(20px); pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; }
+    .page-visible { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-answer.open { max-height: 300px; }
+
+    .faq-toggle { cursor: pointer; min-height: 44px; }
+    .faq-toggle:hover { background: rgba(255,255,255,0.03); }
+
+    .faq-chevron { transition: transform 0.3s ease; }
+    .faq-chevron.rotated { transform: rotate(180deg); }
+
+    .step-number {
+      width: 44px; height: 44px; min-width: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(34, 197, 94, 0.15);
+      color: #22C55E;
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    a { cursor: pointer; }
+
+    /* Focus states for accessibility */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid #22C55E;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-headline { font-size: 1.75rem !important; line-height: 1.2 !important; }
+      .hero-sub { font-size: 1rem !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-mesh"></div>
+
+  <div class="relative z-10">
+
+    <!-- ============================================ -->
+    <!-- LANDING PAGE -->
+    <!-- ============================================ -->
+    <div id="landing-page" class="page-transition page-visible">
+
+      <!-- Nav Bar -->
+      <nav class="glass border-b border-white/5 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="text-lg font-bold tracking-tight">Elevated AI</span>
+          </div>
+          <a href="#qualify" class="cta-btn hidden sm:inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-surface-950 font-semibold text-sm px-5 py-2.5 rounded-lg">
+            See If You Qualify
+          </a>
+        </div>
+      </nav>
+
+      <!-- Trust Bar -->
+      <section class="border-b border-white/5 bg-white/[0.02]">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+          <div class="flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span class="text-xs font-medium text-white/50">Pay-Per-Appointment</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="text-xs font-medium text-white/50">First Appointments in 7 Days</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="text-xs font-medium text-white/50">Only 5 Agents Per Market</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span class="text-xs font-medium text-white/50">100% Exclusive Leads</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hero Section -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16 text-center">
+        <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-6">
+          <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+          <span class="text-xs font-medium text-white/60 uppercase tracking-wider">Only 5 Spots Per Market</span>
+        </div>
+        <h1 class="hero-headline text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold leading-tight max-w-4xl mx-auto mb-6">
+          Stop Fighting Over the Same Recycled Leads.
+          <span class="text-accent block mt-2">Get Exclusive Seller Appointments Delivered to Your Calendar.</span>
+        </h1>
+        <p class="hero-sub text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-4 leading-relaxed">
+          We use AI-powered marketing to find homeowners who are <strong class="text-white/90">open to selling but haven't talked to another agent yet</strong>. You only pay when a qualified appointment shows up.
+        </p>
+        <p class="text-sm text-accent/80 font-semibold mb-10">No setup fees. No retainers. No risk.</p>
+        <a href="#qualify" class="cta-btn inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-surface-950 font-bold text-lg px-8 py-4 rounded-xl glow-green">
+          See If You Qualify
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+        <p class="text-xs text-white/30 mt-4">Limited availability. We cap each market at 5 agents to protect your territory.</p>
+      </section>
+
+      <!-- Value Props -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <!-- Card 1: Problem-State Marketing -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-5">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+            </div>
+            <h3 class="text-lg font-bold mb-3">Problem-State Marketing</h3>
+            <p class="text-white/55 text-sm leading-relaxed">
+              We target the <strong class="text-white/80">80% of the market</strong> that 97% of agents ignore. Homeowners open to selling but not yet looking for a realtor.
+            </p>
+          </div>
+
+          <!-- Card 2: AI-Powered Follow-Up -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-5">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93"/><path d="M8.56 6.22A4 4 0 0 1 12 2"/><path d="M17 10h.01"/><path d="M7 10h.01"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 14v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><circle cx="8.5" cy="17.5" r="1"/><circle cx="15.5" cy="17.5" r="1"/></svg>
+            </div>
+            <h3 class="text-lg font-bold mb-3">AI-Powered Follow-Up</h3>
+            <p class="text-white/55 text-sm leading-relaxed">
+              <strong class="text-white/80">6 specialized AI agents</strong> work 24/7 to nurture, qualify, and book appointments. No leads fall through the cracks.
+            </p>
+          </div>
+
+          <!-- Card 3: Pay For Results -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-5">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3 class="text-lg font-bold mb-3">You Only Pay For Results</h3>
+            <p class="text-white/55 text-sm leading-relaxed">
+              No retainers. No long-term contracts to start. You pay per qualified appointment that <strong class="text-white/80">shows up on your calendar</strong>.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- How It Works -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl sm:text-3xl font-bold mb-3">How It Works</h2>
+          <p class="text-white/50 text-sm max-w-md mx-auto">Three steps. No guesswork. Appointments on your calendar.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <!-- Step 1 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 relative">
+            <div class="step-number mb-5">1</div>
+            <h3 class="text-lg font-bold mb-3">We Find Sellers in Your Market</h3>
+            <p class="text-white/55 text-sm leading-relaxed">
+              Our AI targets homeowners who are <strong class="text-white/80">open to selling</strong> but haven't listed yet. Not shared leads. Not Zillow recycled contacts. Exclusive to you.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 relative">
+            <div class="step-number mb-5">2</div>
+            <h3 class="text-lg font-bold mb-3">AI Qualifies and Books Them</h3>
+            <p class="text-white/55 text-sm leading-relaxed">
+              6 AI agents work <strong class="text-white/80">24/7</strong> to nurture, qualify, and book appointments. By the time they hit your calendar, they're ready to talk.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 relative">
+            <div class="step-number mb-5">3</div>
+            <h3 class="text-lg font-bold mb-3">You Show Up and Close</h3>
+            <p class="text-white/55 text-sm leading-relaxed">
+              No cold calling. No chasing. Just <strong class="text-white/80">qualified seller appointments</strong> on your calendar. You do what you do best -- close deals.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Social Proof -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+        <div class="glass rounded-2xl p-8 sm:p-12 text-center">
+          <div class="flex items-center justify-center gap-2 mb-6">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span class="text-sm font-semibold text-accent uppercase tracking-wider">Proven Results</span>
+          </div>
+          <p class="text-2xl sm:text-3xl font-bold mb-4">
+            Agents using this system average <span class="text-accent">3-4 listings</span> per $1,000-$1,500 in ad spend
+          </p>
+          <p class="text-white/40 text-sm max-w-md mx-auto">
+            Results vary by market. Testimonials coming soon as we onboard our first cohort of agents.
+          </p>
+
+          <!-- Testimonial Placeholders -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 max-w-2xl mx-auto">
+            <div class="glass-card rounded-xl p-5 text-left">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-white/70">Agent Testimonial</p>
+                  <p class="text-xs text-white/30">Coming Soon</p>
+                </div>
+              </div>
+              <p class="text-sm text-white/40 italic">"Placeholder for agent testimonial about qualified appointments and ROI."</p>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-left">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-white/70">Agent Testimonial</p>
+                  <p class="text-xs text-white/30">Coming Soon</p>
+                </div>
+              </div>
+              <p class="text-sm text-white/40 italic">"Placeholder for agent testimonial about lead quality and AI follow-up."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Qualification Form -->
+      <section id="qualify" class="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
+        <div class="max-w-2xl mx-auto">
+          <div class="text-center mb-10">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-3">See If You Qualify</h2>
+            <p class="text-white/50 text-sm">We only work with a limited number of agents per market. Fill out the form below and we'll reach out within 24 hours.</p>
+          </div>
+
+          <form id="qualification-form" class="glass rounded-2xl p-6 sm:p-10 space-y-5" novalidate>
+
+            <!-- Full Name -->
+            <div>
+              <label for="fullName" class="block text-sm font-medium text-white/70 mb-1.5">Full Name <span class="text-red-400">*</span></label>
+              <input type="text" id="fullName" name="fullName" required placeholder="John Smith" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+              <p class="error-msg" id="fullName-error">Please enter your full name.</p>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-white/70 mb-1.5">Email <span class="text-red-400">*</span></label>
+              <input type="email" id="email" name="email" required placeholder="john@example.com" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+              <p class="error-msg" id="email-error">Please enter a valid email address.</p>
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label for="phone" class="block text-sm font-medium text-white/70 mb-1.5">Phone <span class="text-red-400">*</span></label>
+              <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+              <p class="error-msg" id="phone-error">Please enter your phone number.</p>
+            </div>
+
+            <!-- Market / City -->
+            <div>
+              <label for="market" class="block text-sm font-medium text-white/70 mb-1.5">Market / City <span class="text-red-400">*</span></label>
+              <input type="text" id="market" name="market" required placeholder="e.g. Austin, TX" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+              <p class="error-msg" id="market-error">Please enter your market or city.</p>
+            </div>
+
+            <!-- Monthly Marketing Spend -->
+            <div>
+              <label for="monthlySpend" class="block text-sm font-medium text-white/70 mb-1.5">Current Monthly Marketing Spend</label>
+              <select id="monthlySpend" name="monthlySpend" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+                <option value="" disabled selected>Select your spend range</option>
+                <option value="$0">$0</option>
+                <option value="Under $500">Under $500</option>
+                <option value="$500-$1,000">$500-$1,000</option>
+                <option value="$1,000-$2,500">$1,000-$2,500</option>
+                <option value="$2,500-$5,000">$2,500-$5,000</option>
+                <option value="$5,000+">$5,000+</option>
+              </select>
+            </div>
+
+            <!-- Deals Closed -->
+            <div>
+              <label for="dealsClosed" class="block text-sm font-medium text-white/70 mb-1.5">Deals Closed Last 12 Months</label>
+              <select id="dealsClosed" name="dealsClosed" class="form-input w-full px-4 py-3 rounded-lg text-sm">
+                <option value="" disabled selected>Select a range</option>
+                <option value="0-5">0-5</option>
+                <option value="6-15">6-15</option>
+                <option value="16-30">16-30</option>
+                <option value="31-50">31-50</option>
+                <option value="50+">50+</option>
+              </select>
+            </div>
+
+            <!-- Biggest Challenge -->
+            <div>
+              <label for="challenge" class="block text-sm font-medium text-white/70 mb-1.5">Biggest Challenge Right Now</label>
+              <textarea id="challenge" name="challenge" rows="3" placeholder="What's the #1 thing holding your business back?" class="form-input w-full px-4 py-3 rounded-lg text-sm resize-none"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submit-btn" class="cta-btn w-full bg-accent hover:bg-accent-dim text-surface-950 font-bold text-base py-4 rounded-xl glow-green flex items-center justify-center gap-2 mt-2">
+              <span id="submit-text">See If You Qualify</span>
+              <svg id="submit-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              <svg id="submit-spinner" class="hidden animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg>
+            </button>
+
+            <p class="text-center text-white/30 text-xs mt-3">Your information is secure and will never be shared with third parties.</p>
+          </form>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="border-t border-white/5 py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <p class="text-white/30 text-xs">Elevated AI Solutions. All rights reserved.</p>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- ============================================ -->
+    <!-- THANK YOU PAGE -->
+    <!-- ============================================ -->
+    <div id="thankyou-page" class="page-transition page-hidden">
+
+      <nav class="glass border-b border-white/5 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="text-lg font-bold tracking-tight">Elevated AI</span>
+        </div>
+      </nav>
+
+      <section class="max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
+
+        <!-- Success Banner -->
+        <div class="text-center mb-14">
+          <div class="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-6">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold mb-3">You're In — Here's What Happens Next</h1>
+          <p class="text-white/50 text-sm max-w-md mx-auto">Your application has been received. Here's what to expect.</p>
+        </div>
+
+        <!-- Steps -->
+        <div class="space-y-6 mb-16">
+
+          <!-- Step 1 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 flex gap-5 items-start">
+            <div class="step-number">1</div>
+            <div>
+              <h3 class="text-lg font-bold mb-1">We're Reviewing Your Application</h3>
+              <p class="text-white/50 text-sm leading-relaxed">Our team will review your market, experience, and goals. Expect a call or text within <strong class="text-white/80">24 hours</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 flex gap-5 items-start">
+            <div class="step-number">2</div>
+            <div>
+              <h3 class="text-lg font-bold mb-1">Watch This While You Wait</h3>
+              <p class="text-white/50 text-sm leading-relaxed mb-4">Learn how our system works and what to expect on your strategy call.</p>
+              <!-- Video Placeholder -->
+              <div class="rounded-xl overflow-hidden bg-white/5 border border-white/10 aspect-video flex items-center justify-center">
+                <div class="text-center">
+                  <svg class="mx-auto mb-3" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <p class="text-white/30 text-sm">FAQ / Explainer Video Coming Soon</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: FAQ -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex gap-5 items-start mb-6">
+              <div class="step-number">3</div>
+              <div>
+                <h3 class="text-lg font-bold mb-1">Frequently Asked Questions</h3>
+                <p class="text-white/50 text-sm">Everything you need to know before our call.</p>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+
+              <!-- FAQ 1 -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">How much does it cost?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">You pay per qualified appointment. No setup fees. No retainers. We eat the risk.</p>
+                </div>
+              </div>
+
+              <!-- FAQ 2 -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">How quickly do I see results?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">First leads within 3 days of ads going live. First appointments within the first week.</p>
+                </div>
+              </div>
+
+              <!-- FAQ 3 -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">What kind of leads are these?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">Homeowners in YOUR market who are open to selling. Not shared leads. Not Zillow recycled contacts. Exclusive to you.</p>
+                </div>
+              </div>
+
+              <!-- FAQ 4 -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">Do I need to run my own ads?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">No. We handle everything -- targeting, creative, optimization. You show up and close.</p>
+                </div>
+              </div>
+
+              <!-- FAQ 5 -->
+              <div class="rounded-xl overflow-hidden">
+                <button type="button" class="faq-toggle w-full flex items-center justify-between px-5 py-4 text-left rounded-xl" onclick="toggleFaq(this)">
+                  <span class="text-sm font-semibold pr-4">What if the leads don't convert?</span>
+                  <svg class="faq-chevron flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer px-5">
+                  <p class="text-sm text-white/55 leading-relaxed pb-4">Our AI follow-up system nurtures cold leads until they're ready. Most agents see compounding results after 30-60 days.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <footer class="border-t border-white/5 py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <p class="text-white/30 text-xs">Elevated AI Solutions. All rights reserved.</p>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <script>
+    // =============================================
+    // CONFIG — Update this when GHL webhook is ready
+    // =============================================
+    const FORM_ENDPOINT = 'https://services.leadconnectorhq.com/hooks/PLACEHOLDER_WEBHOOK_ID';
+
+    // =============================================
+    // FORM VALIDATION & SUBMISSION
+    // =============================================
+    const form = document.getElementById('qualification-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const submitArrow = document.getElementById('submit-arrow');
+    const submitSpinner = document.getElementById('submit-spinner');
+
+    const requiredFields = ['fullName', 'email', 'phone', 'market'];
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validateField(fieldId) {
+      const field = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + '-error');
+      let isValid = true;
+
+      if (!field.value.trim()) {
+        isValid = false;
+      } else if (fieldId === 'email' && !validateEmail(field.value)) {
+        isValid = false;
+      }
+
+      if (!isValid) {
+        field.classList.add('error');
+        if (errorEl) errorEl.classList.add('visible');
+      } else {
+        field.classList.remove('error');
+        if (errorEl) errorEl.classList.remove('visible');
+      }
+
+      return isValid;
+    }
+
+    // Clear error on input
+    requiredFields.forEach(function(fieldId) {
+      var field = document.getElementById(fieldId);
+      field.addEventListener('input', function() {
+        field.classList.remove('error');
+        var errorEl = document.getElementById(fieldId + '-error');
+        if (errorEl) errorEl.classList.remove('visible');
+      });
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Validate all required fields
+      let allValid = true;
+      requiredFields.forEach(function(fieldId) {
+        if (!validateField(fieldId)) {
+          allValid = false;
+        }
+      });
+
+      if (!allValid) {
+        // Scroll to first error
+        const firstError = form.querySelector('.error');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+        return;
+      }
+
+      // Collect form data
+      const formData = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        market: document.getElementById('market').value.trim(),
+        monthlySpend: document.getElementById('monthlySpend').value || '',
+        dealsClosed: document.getElementById('dealsClosed').value || '',
+        challenge: document.getElementById('challenge').value.trim()
+      };
+
+      // Show loading state
+      submitBtn.disabled = true;
+      submitText.textContent = 'Submitting...';
+      submitArrow.classList.add('hidden');
+      submitSpinner.classList.remove('hidden');
+
+      // Submit to endpoint
+      fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      .then(function() {
+        showThankYou();
+      })
+      .catch(function() {
+        // Show thank-you page even if endpoint isn't configured yet
+        // Remove this fallback once the GHL webhook is live
+        showThankYou();
+      });
+    });
+
+    // =============================================
+    // PAGE TRANSITION
+    // =============================================
+    function showThankYou() {
+      const landing = document.getElementById('landing-page');
+      const thankyou = document.getElementById('thankyou-page');
+
+      landing.classList.remove('page-visible');
+      landing.classList.add('page-hidden');
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      setTimeout(function() {
+        thankyou.classList.remove('page-hidden');
+        thankyou.classList.add('page-visible');
+      }, 50);
+    }
+
+    // =============================================
+    // FAQ TOGGLE
+    // =============================================
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const chevron = btn.querySelector('.faq-chevron');
+
+      const isOpen = answer.classList.contains('open');
+
+      // Close all FAQs first
+      document.querySelectorAll('.faq-answer').forEach(function(a) { a.classList.remove('open'); });
+      document.querySelectorAll('.faq-chevron').forEach(function(c) { c.classList.remove('rotated'); });
+
+      // Toggle this one if it was closed
+      if (!isOpen) {
+        answer.classList.add('open');
+        chevron.classList.add('rotated');
+      }
+    }
+
+    // =============================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // =============================================
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

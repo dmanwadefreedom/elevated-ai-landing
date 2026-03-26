@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Portal — Loading...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            surface: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
+            accent: { DEFAULT: '#22C55E', light: '#4ADE80', dim: '#16A34A' },
+            warn: '#F59E0B',
+            danger: '#EF4444',
+            info: '#3B82F6'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #020617; color: #f8fafc; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+    .glass-light { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); }
+    .glass-hover:hover { background: rgba(30, 41, 59, 0.7); border-color: rgba(255,255,255,0.12); }
+    .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.15), 0 0 60px rgba(34, 197, 94, 0.05); }
+    .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
+    .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); }
+
+    .gradient-mesh {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(34, 197, 94, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 80% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 300px at 60% 30%, rgba(139, 92, 246, 0.03) 0%, transparent 70%);
+    }
+
+    .nav-item { transition: all 0.2s ease; cursor: pointer; }
+    .nav-item:hover { background: rgba(255,255,255,0.06); }
+    .nav-item.active { background: rgba(34, 197, 94, 0.1); border-left: 2px solid #22C55E; color: #22C55E; }
+
+    .stat-card { transition: all 0.3s ease; cursor: pointer; }
+    .stat-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+
+    .status-critical { color: #EF4444; }
+    .status-warning { color: #F59E0B; }
+    .status-active, .status-delivered { color: #22C55E; }
+    .status-planned { color: #3B82F6; }
+    .status-in-progress { color: #8B5CF6; }
+
+    .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .badge-critical { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .badge-warning { background: rgba(245,158,11,0.15); color: #FCD34D; }
+    .badge-active, .badge-delivered { background: rgba(34,197,94,0.15); color: #86EFAC; }
+    .badge-planned { background: rgba(59,130,246,0.15); color: #93C5FD; }
+    .badge-in-progress { background: rgba(139,92,246,0.15); color: #C4B5FD; }
+    .badge-no-access, .badge-expired, .badge-invalid { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+
+    .pipeline-bar { height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; transition: all 0.3s ease; cursor: pointer; position: relative; }
+    .pipeline-bar:hover { filter: brightness(1.2); transform: scaleY(1.1); }
+
+    .progress-ring { transition: stroke-dashoffset 0.6s ease; }
+
+    .page { display: none; opacity: 0; transition: opacity 0.3s ease; }
+    .page.active { display: block; opacity: 1; }
+
+    .bento { display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
+    .bento > * { min-height: 120px; }
+
+    @media (max-width: 1024px) { .bento { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 640px) { .bento { grid-template-columns: 1fr; } .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } }
+
+    .form-input {
+      background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      padding: 10px 14px; color: #f8fafc; font-family: inherit; font-size: 0.875rem; width: 100%;
+      transition: border-color 0.2s ease;
+    }
+    .form-input:focus { outline: none; border-color: #22C55E; box-shadow: 0 0 0 3px rgba(34,197,94,0.1); }
+    .form-input::placeholder { color: #64748b; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-in { animation: fadeUp 0.4s ease forwards; }
+    .delay-1 { animation-delay: 0.05s; opacity: 0; }
+    .delay-2 { animation-delay: 0.1s; opacity: 0; }
+    .delay-3 { animation-delay: 0.15s; opacity: 0; }
+    .delay-4 { animation-delay: 0.2s; opacity: 0; }
+    .delay-5 { animation-delay: 0.25s; opacity: 0; }
+    .delay-6 { animation-delay: 0.3s; opacity: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-in, .stat-card, .pipeline-bar, .nav-item { animation: none !important; transition: none !important; opacity: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-mesh"></div>
+
+  <!-- Mobile Header -->
+  <div class="fixed top-0 left-0 right-0 z-50 glass px-4 py-3 flex items-center justify-between lg:hidden">
+    <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-white/5 cursor-pointer" aria-label="Toggle menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <span id="mobileTitle" class="text-sm font-semibold text-white/80">Loading...</span>
+    <div id="mobileStatus" class="w-2 h-2 rounded-full bg-accent"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 glass z-40 flex flex-col transition-transform duration-300 lg:translate-x-0">
+    <div class="p-5 border-b border-white/5">
+      <div class="flex items-center gap-3">
+        <div id="clientAvatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-emerald-700 flex items-center justify-center text-white font-bold text-sm">?</div>
+        <div>
+          <div id="sidebarName" class="font-semibold text-sm text-white">Loading...</div>
+          <div id="sidebarCompany" class="text-xs text-white/40">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+      <div class="nav-item active rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm" data-page="overview">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="4" height="7" rx="1"/><rect x="3" y="14" width="4" height="4" rx="1"/><rect x="14" y="14" width="4" height="4" rx="1"/></svg>
+        Overview
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="salesprocess">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8" transform="scale(0.7) translate(2,2)"/></svg>
+        Sales System
+        <span class="ml-auto text-[10px] bg-accent/20 text-green-400 px-1.5 py-0.5 rounded-full">NEW</span>
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="pipeline">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" transform="scale(0.75)"/></svg>
+        Pipeline
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="campaigns">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" transform="scale(0.75)"/><path d="m22 6-10 7L2 6" transform="scale(0.75)"/></svg>
+        Campaigns
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="content">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" transform="scale(0.75)"/><path d="M16 2v4M8 2v4M3 10h18" transform="scale(0.75)"/></svg>
+        Content
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="deliverables">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4" transform="scale(0.75)"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" transform="scale(0.75)"/></svg>
+        Deliverables
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="goals">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7" transform="scale(0.75) translate(3,3)"/><circle cx="9" cy="9" r="4" transform="scale(0.75) translate(3,3)"/><circle cx="9" cy="9" r="1" transform="scale(0.75) translate(3,3)"/></svg>
+        Goals
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="meetings">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2" transform="scale(0.75) translate(2,2)"/><circle cx="9" cy="7" r="4" transform="scale(0.75) translate(2,2)"/></svg>
+        Meetings
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="blockers">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="8" transform="scale(0.75) translate(3,3)"/><path d="M12 8v4M12 16h.01" transform="scale(0.75) translate(3,3)"/></svg>
+        Blockers
+        <span id="blockerCount" class="ml-auto text-xs bg-danger/20 text-red-400 px-2 py-0.5 rounded-full">0</span>
+      </div>
+
+      <div class="border-t border-white/5 my-3"></div>
+
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="onboarding">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="1" transform="scale(0.75) translate(3,3)"/><circle cx="9" cy="3" r="1" transform="scale(0.75) translate(3,3)"/><circle cx="9" cy="15" r="1" transform="scale(0.75) translate(3,3)"/></svg>
+        Setup / Onboarding
+      </div>
+      <div class="nav-item rounded-lg px-3 py-2.5 flex items-center gap-3 text-sm text-white/60" data-page="apis">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" transform="scale(0.75)"/></svg>
+        API Connections
+      </div>
+    </nav>
+
+    <div class="p-4 border-t border-white/5">
+      <div class="text-[10px] text-white/20 text-center">Elevated AI Solutions</div>
+      <div class="text-[10px] text-white/20 text-center mt-0.5">Built by JARVIS</div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="lg:ml-64 relative z-10 min-h-screen pt-14 lg:pt-0">
+    <div class="p-4 lg:p-6 max-w-[1400px] mx-auto">
+
+      <!-- Header -->
+      <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 id="pageTitle" class="text-2xl font-bold text-white">Overview</h1>
+          <p id="pageSubtitle" class="text-sm text-white/40 mt-1">Loading client data...</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="lastUpdated" class="text-xs text-white/30"></span>
+          <button onclick="location.reload()" class="glass rounded-lg px-3 py-2 text-xs text-white/60 hover:text-white cursor-pointer transition-colors" aria-label="Refresh data">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 4v6h6" transform="scale(0.6) translate(3,3)"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10" transform="scale(0.6) translate(3,3)"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- ========== OVERVIEW PAGE ========== -->
+      <div id="page-overview" class="page active">
+        <div class="bento">
+          <!-- Revenue Card -->
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 glass rounded-2xl p-5 stat-card animate-in delay-1">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Agency Revenue</div>
+            <div id="mrrValue" class="text-3xl font-bold text-white">$0</div>
+            <div id="mrrBreakdown" class="text-xs text-white/30 mt-2"></div>
+            <div id="mrrCosts" class="text-xs text-white/20 mt-1"></div>
+          </div>
+
+          <!-- Pipeline Card -->
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 glass rounded-2xl p-5 stat-card animate-in delay-2">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Pipeline Total</div>
+            <div id="pipelineTotal" class="text-3xl font-bold text-white">0</div>
+            <div class="text-xs text-white/30 mt-2">leads in funnel</div>
+          </div>
+
+          <!-- Active Campaigns -->
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 glass rounded-2xl p-5 stat-card animate-in delay-3">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Active Campaigns</div>
+            <div id="campaignCount" class="text-3xl font-bold text-white">0</div>
+            <div id="campaignSummary" class="text-xs text-white/30 mt-2"></div>
+          </div>
+
+          <!-- Next Meeting -->
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 glass rounded-2xl p-5 stat-card animate-in delay-4">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Next Meeting</div>
+            <div id="nextMeeting" class="text-lg font-bold text-white mt-1">--</div>
+            <div id="meetingSchedule" class="text-xs text-white/30 mt-2"></div>
+          </div>
+
+          <!-- Pipeline Funnel (wide) -->
+          <div class="col-span-12 lg:col-span-8 glass rounded-2xl p-5 animate-in delay-3">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Pipeline Funnel</div>
+            <div id="pipelineFunnel" class="space-y-2"></div>
+          </div>
+
+          <!-- Blockers (side) -->
+          <div class="col-span-12 lg:col-span-4 glass rounded-2xl p-5 animate-in delay-4">
+            <div class="flex items-center justify-between mb-4">
+              <div class="text-xs text-white/40 font-medium uppercase tracking-wider">Active Blockers</div>
+              <span id="blockerBadge" class="badge badge-critical">0</span>
+            </div>
+            <div id="blockerList" class="space-y-3"></div>
+          </div>
+
+          <!-- Weekly Goals -->
+          <div class="col-span-12 lg:col-span-6 glass rounded-2xl p-5 animate-in delay-4">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">This Week's Goals</div>
+            <div id="weeklyGoals" class="space-y-2"></div>
+          </div>
+
+          <!-- Content Preview -->
+          <div class="col-span-12 lg:col-span-6 glass rounded-2xl p-5 animate-in delay-5">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Upcoming Content</div>
+            <div id="contentPreview" class="space-y-2"></div>
+          </div>
+
+          <!-- Recent Deliverables -->
+          <div class="col-span-12 glass rounded-2xl p-5 animate-in delay-5">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Deliverables</div>
+            <div id="deliverablesPreview" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== SALES SYSTEM PAGE ========== -->
+      <div id="page-salesprocess" class="page">
+        <div class="glass rounded-2xl p-6 mb-4">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Sales System — Cortana AI Accelerator Framework</div>
+              <div class="text-sm text-white/60">Real Estate Brokers/Agents — Pay-Per-Appointment Lead Gen</div>
+            </div>
+            <div class="flex gap-2">
+              <a href="sales-flow.html" target="_blank" class="glass-light rounded-lg px-3 py-2 text-xs text-accent hover:text-white cursor-pointer transition-colors flex items-center gap-1.5">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" transform="scale(0.58)"/><path d="M15 3h6v6M10 14L21 3" transform="scale(0.58)"/></svg>
+                Full Flow Diagram
+              </a>
+              <a href="closer-sop.html" target="_blank" class="glass-light rounded-lg px-3 py-2 text-xs text-green-400 hover:text-white cursor-pointer transition-colors flex items-center gap-1.5">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" transform="scale(0.58)"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" transform="scale(0.58)"/></svg>
+                Closer SOP
+              </a>
+            </div>
+          </div>
+
+          <!-- Funnel stages as horizontal flow -->
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div class="glass-light rounded-xl p-4 text-center border-t-2 border-yellow-500">
+              <div class="text-[10px] uppercase tracking-wider text-yellow-400 mb-2">Stage 1</div>
+              <svg class="mx-auto mb-2" width="28" height="28" fill="none" stroke="#F59E0B" stroke-width="1.5"><circle cx="14" cy="14" r="10"/><path d="M14 8v4l3 3"/></svg>
+              <div class="text-sm font-semibold text-white mb-1">Meta Ads</div>
+              <span class="badge badge-warning">Launching</span>
+              <div class="text-[11px] text-white/40 mt-2">10-12 creatives ready</div>
+              <div class="text-[11px] text-white/40">James uploading</div>
+            </div>
+            <div class="glass-light rounded-xl p-4 text-center border-t-2 border-red-500">
+              <div class="text-[10px] uppercase tracking-wider text-red-400 mb-2">Stage 2</div>
+              <svg class="mx-auto mb-2" width="28" height="28" fill="none" stroke="#EF4444" stroke-width="1.5"><rect x="4" y="4" width="20" height="16" rx="2"/><path d="M4 9h20"/></svg>
+              <div class="text-sm font-semibold text-white mb-1">Landing Page</div>
+              <span class="badge badge-critical">Needs Build</span>
+              <div class="text-[11px] text-white/40 mt-2">Qualification form</div>
+              <div class="text-[11px] text-white/40">+ FAQ thank-you page</div>
+            </div>
+            <div class="glass-light rounded-xl p-4 text-center border-t-2 border-red-500">
+              <div class="text-[10px] uppercase tracking-wider text-red-400 mb-2">Stage 3</div>
+              <svg class="mx-auto mb-2" width="28" height="28" fill="none" stroke="#EF4444" stroke-width="1.5"><path d="M14 2L4 14h9l-1 8 10-12h-9l1-8"/></svg>
+              <div class="text-sm font-semibold text-white mb-1">AI Agents</div>
+              <span class="badge badge-critical">Needs GHL Key</span>
+              <div class="text-[11px] text-white/40 mt-2">5 SMS agents</div>
+              <div class="text-[11px] text-white/40">Appt / No-show / Nurture</div>
+            </div>
+            <div class="glass-light rounded-xl p-4 text-center border-t-2 border-green-500">
+              <div class="text-[10px] uppercase tracking-wider text-green-400 mb-2">Stage 4</div>
+              <svg class="mx-auto mb-2" width="28" height="28" fill="none" stroke="#22C55E" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" transform="scale(0.93) translate(1,1)"/><path d="M22 4L12 14.01l-3-3" transform="scale(0.93) translate(1,1)"/></svg>
+              <div class="text-sm font-semibold text-white mb-1">Sales Call</div>
+              <span class="badge badge-active">SOP Ready</span>
+              <div class="text-[11px] text-white/40 mt-2">Cortana framework</div>
+              <div class="text-[11px] text-white/40">Closer TBD</div>
+            </div>
+            <div class="glass-light rounded-xl p-4 text-center border-t-2 border-blue-500">
+              <div class="text-[10px] uppercase tracking-wider text-blue-400 mb-2">Stage 5</div>
+              <svg class="mx-auto mb-2" width="28" height="28" fill="none" stroke="#3B82F6" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2" transform="scale(0.93) translate(3,2)"/><circle cx="9" cy="7" r="4" transform="scale(0.93) translate(3,2)"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" transform="scale(0.93) translate(3,2)"/></svg>
+              <div class="text-sm font-semibold text-white mb-1">Onboard + Deliver</div>
+              <span class="badge badge-planned">Planned</span>
+              <div class="text-[11px] text-white/40 mt-2">Reactivation first</div>
+              <div class="text-[11px] text-white/40">Leads in 3 days</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick resources -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <a href="closer-sop.html" target="_blank" class="glass rounded-2xl p-5 glass-hover cursor-pointer block">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">Closer SOP</div>
+            <div class="text-sm font-semibold text-white mb-1">2-Page Sales Script</div>
+            <div class="text-xs text-white/50">Connect → Context → Intro → Frame → Discovery → Pitch → Close → CIVR Objections</div>
+            <div class="mt-3"><span class="badge badge-active">Ready</span></div>
+          </a>
+          <a href="landing-page.html" target="_blank" class="glass rounded-2xl p-5 glass-hover cursor-pointer block">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">Landing Page</div>
+            <div class="text-sm font-semibold text-white mb-1">RE Agent Qualification</div>
+            <div class="text-xs text-white/50">Form + Thank-you page with FAQ video framework. Triple qualification.</div>
+            <div class="mt-3"><span class="badge badge-in-progress">Draft Ready</span></div>
+          </a>
+          <a href="pre-call-doc.html" target="_blank" class="glass rounded-2xl p-5 glass-hover cursor-pointer block">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">The Doc</div>
+            <div class="text-sm font-semibold text-white mb-1">Pre-Call Sales Letter</div>
+            <div class="text-xs text-white/50">Texted after booking. Problem-state education. "People felt stupid not buying."</div>
+            <div class="mt-3"><span class="badge badge-in-progress">Draft Ready</span></div>
+          </a>
+        </div>
+
+        <!-- Key strategy insight -->
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Strategy: Problem-State vs Solution-State</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-light rounded-xl p-5 border border-red-500/20">
+              <div class="text-red-400 text-xs font-semibold uppercase tracking-wider mb-2">What 97% of agents do (Solution State)</div>
+              <div class="text-sm text-white/70 space-y-1.5">
+                <div>Target people actively looking for a realtor</div>
+                <div>Only 3-7% of the market</div>
+                <div>Competing with 5-7 other agents per lead</div>
+                <div>Zillow, Realtor.com, HomeAdvisor shared leads</div>
+                <div class="text-red-400 font-semibold">Race to the bottom on price</div>
+              </div>
+            </div>
+            <div class="glass-light rounded-xl p-5 border border-green-500/20 glow-green">
+              <div class="text-green-400 text-xs font-semibold uppercase tracking-wider mb-2">What we do (Problem State)</div>
+              <div class="text-sm text-white/70 space-y-1.5">
+                <div>Target homeowners OPEN to selling but not looking yet</div>
+                <div>80% of the market — 3% of realtors compete here</div>
+                <div>Education angle: "Why 2025 is the best time to downsize"</div>
+                <div>You're the FIRST and ONLY agent they talk to</div>
+                <div class="text-green-400 font-semibold">No competition. Premium positioning.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team -->
+          <div class="mt-6 pt-5 border-t border-white/5">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-3">Team</div>
+            <div class="flex flex-wrap gap-3">
+              <div class="glass-light rounded-lg px-3 py-2 text-xs"><span class="text-blue-400 font-semibold">James</span> <span class="text-white/40">— Meta Ads</span></div>
+              <div class="glass-light rounded-lg px-3 py-2 text-xs"><span class="text-purple-400 font-semibold">David</span> <span class="text-white/40">— Sales Process</span></div>
+              <div class="glass-light rounded-lg px-3 py-2 text-xs"><span class="text-yellow-400 font-semibold">Doug</span> <span class="text-white/40">— Pricing</span></div>
+              <div class="glass-light rounded-lg px-3 py-2 text-xs"><span class="text-red-400 font-semibold">Closer</span> <span class="text-white/40">— TBD (Mo / Dial a Closer)</span></div>
+              <div class="glass-light rounded-lg px-3 py-2 text-xs"><span class="text-green-400 font-semibold">Dylan</span> <span class="text-white/40">— Systems + AI</span></div>
+            </div>
+          </div>
+
+          <!-- Need from Conor -->
+          <div class="mt-5 pt-5 border-t border-white/5">
+            <div class="text-xs text-red-400/80 font-medium uppercase tracking-wider mb-3">Needed From Conor</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="glass-light rounded-lg p-3 border border-red-500/20">
+                <div class="text-xs font-semibold text-white mb-1">Fresh GHL API Key</div>
+                <div class="text-[11px] text-white/40">Current JWT expired. Settings → API → Regenerate.</div>
+              </div>
+              <div class="glass-light rounded-lg p-3 border border-red-500/20">
+                <div class="text-xs font-semibold text-white mb-1">Meta Ad Account ID</div>
+                <div class="text-[11px] text-white/40">To pull ad metrics into this dashboard.</div>
+              </div>
+              <div class="glass-light rounded-lg p-3 border border-yellow-500/20">
+                <div class="text-xs font-semibold text-white mb-1">Pricing from Doug</div>
+                <div class="text-[11px] text-white/40">Per-appointment rate for RE agents. Varies by market.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PIPELINE PAGE ========== -->
+      <div id="page-pipeline" class="page">
+        <div class="glass rounded-2xl p-6 mb-4">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-6">Lead Pipeline</div>
+          <div id="pipelineDetail" class="space-y-4"></div>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Conversion Funnel</div>
+          <canvas id="funnelChart" height="300"></canvas>
+        </div>
+      </div>
+
+      <!-- ========== CAMPAIGNS PAGE ========== -->
+      <div id="page-campaigns" class="page">
+        <div id="campaignCards" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- ========== CONTENT CALENDAR PAGE ========== -->
+      <div id="page-content" class="page">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Content Calendar</div>
+          <div id="contentCalendar" class="space-y-3"></div>
+        </div>
+      </div>
+
+      <!-- ========== DELIVERABLES PAGE ========== -->
+      <div id="page-deliverables" class="page">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">All Deliverables</div>
+          <div id="allDeliverables" class="space-y-3"></div>
+        </div>
+      </div>
+
+      <!-- ========== GOALS PAGE ========== -->
+      <div id="page-goals" class="page">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="glass rounded-2xl p-6">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Weekly Goals</div>
+            <div id="goalsWeekly" class="space-y-3"></div>
+          </div>
+          <div class="glass rounded-2xl p-6">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Monthly Targets</div>
+            <div id="goalsMonthly" class="space-y-4"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== MEETINGS PAGE ========== -->
+      <div id="page-meetings" class="page">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Meeting History</div>
+          <div id="meetingHistory" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- ========== BLOCKERS PAGE ========== -->
+      <div id="page-blockers" class="page">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Active Blockers</div>
+          <div id="allBlockers" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- ========== ONBOARDING PAGE (Client-facing: progress only, form is in War Room) ========== -->
+      <div id="page-onboarding" class="page">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="glass rounded-2xl p-6">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Onboarding Progress</div>
+            <div id="onboardingProgress" class="space-y-3"></div>
+          </div>
+          <div class="glass rounded-2xl p-6">
+            <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">Client Info</div>
+            <div id="clientInfo" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== API CONNECTIONS PAGE ========== -->
+      <div id="page-apis" class="page">
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-4">API Connections</div>
+          <div id="apiConnections" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+  <script>
+    let DATA = null;
+    const CONFIG_PATH = 'client-config.json';
+
+    async function loadData() {
+      try {
+        const res = await fetch(CONFIG_PATH);
+        DATA = await res.json();
+        document.title = `${DATA.client.company} — Client Portal`;
+        render();
+      } catch (e) {
+        document.getElementById('pageSubtitle').textContent = 'Error loading config: ' + e.message;
+      }
+    }
+
+    function render() {
+      const d = DATA;
+      // Sidebar
+      document.getElementById('clientAvatar').textContent = d.client.name.split(' ').map(n => n[0]).join('');
+      document.getElementById('sidebarName').textContent = d.client.name;
+      document.getElementById('sidebarCompany').textContent = d.client.company;
+      document.getElementById('mobileTitle').textContent = d.client.company;
+      document.getElementById('pageSubtitle').textContent = `${d.client.niche} — ${d.client.model}`;
+      document.getElementById('lastUpdated').textContent = `Updated ${new Date().toLocaleDateString()}`;
+
+      renderOverview();
+      renderPipeline();
+      renderCampaigns();
+      renderContent();
+      renderDeliverables();
+      renderGoals();
+      renderMeetings();
+      renderBlockers();
+      renderOnboarding();
+      renderAPIs();
+    }
+
+    function renderOverview() {
+      const d = DATA;
+      // Revenue
+      document.getElementById('mrrValue').textContent = `$${d.revenue.mrr.toLocaleString()}`;
+      if (d.revenue.mrr === 0 && d.revenue.clientsActive === 0) {
+        document.getElementById('mrrBreakdown').innerHTML = `<span style="color:var(--warn,#F59E0B)">0 clients closed — target: ${d.revenue.clientsTarget}</span>`;
+      } else if (d.revenue.breakdown && d.revenue.breakdown.length) {
+        document.getElementById('mrrBreakdown').innerHTML = d.revenue.breakdown.map(b => `${b.label}: $${b.amount}`).join(' + ');
+      } else {
+        document.getElementById('mrrBreakdown').innerHTML = d.revenue.label || '';
+      }
+      // Show costs if available
+      if (d.revenue.costs && d.revenue.costs.length) {
+        document.getElementById('mrrCosts').innerHTML = 'Costs: $' + d.revenue.monthlyCosts?.toLocaleString() + '/mo';
+      }
+      // Pipeline
+      const total = d.pipeline.stages.reduce((s, st) => s + st.count, 0);
+      document.getElementById('pipelineTotal').textContent = total;
+      // Campaigns
+      const active = d.campaigns.filter(c => c.status !== 'planned').length;
+      document.getElementById('campaignCount').textContent = active;
+      const critical = d.campaigns.filter(c => c.status === 'critical').length;
+      document.getElementById('campaignSummary').textContent = critical > 0 ? `${critical} need attention` : 'All healthy';
+      // Meeting
+      document.getElementById('nextMeeting').textContent = d.meetings[0]?.date ? formatDate(d.meetings[0].date) : '--';
+      document.getElementById('meetingSchedule').textContent = d.client.meetingSchedule;
+
+      // Pipeline funnel
+      const maxCount = Math.max(...d.pipeline.stages.map(s => s.count), 1);
+      document.getElementById('pipelineFunnel').innerHTML = d.pipeline.stages.map(s => `
+        <div class="flex items-center gap-3">
+          <div class="w-24 text-xs text-white/50 text-right">${s.name}</div>
+          <div class="flex-1 bg-white/5 rounded-lg overflow-hidden" style="height:36px">
+            <div class="pipeline-bar" style="width:${Math.max((s.count / maxCount) * 100, 4)}%;background:${s.color}">
+              ${s.count > 0 ? s.count : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Blockers
+      const blockers = DATA.blockers.filter(b => b.severity === 'critical' || b.severity === 'warning');
+      document.getElementById('blockerCount').textContent = blockers.length;
+      document.getElementById('blockerBadge').textContent = blockers.length;
+      document.getElementById('blockerList').innerHTML = blockers.slice(0, 3).map(b => `
+        <div class="glass-light rounded-xl p-3 ${b.severity === 'critical' ? 'border-l-2 border-red-500' : 'border-l-2 border-yellow-500'}">
+          <div class="text-xs font-semibold ${b.severity === 'critical' ? 'text-red-400' : 'text-yellow-400'}">${b.title}</div>
+          <div class="text-[11px] text-white/40 mt-1">${b.detail.substring(0, 80)}...</div>
+        </div>
+      `).join('');
+
+      // Weekly Goals
+      document.getElementById('weeklyGoals').innerHTML = DATA.goals.weekly.map(g => `
+        <div class="flex items-center gap-3">
+          <div class="w-5 h-5 rounded-md border ${g.status === 'completed' ? 'bg-accent/20 border-accent' : g.status === 'in-progress' ? 'bg-purple-500/20 border-purple-500' : 'border-white/10'} flex items-center justify-center">
+            ${g.status === 'completed' ? '<svg width="12" height="12" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M2 6l3 3 5-6"/></svg>' : ''}
+          </div>
+          <span class="text-sm ${g.status === 'completed' ? 'text-white/40 line-through' : 'text-white/80'}">${g.goal}</span>
+          <span class="ml-auto badge badge-${g.priority === 'high' ? 'critical' : 'planned'}">${g.priority}</span>
+        </div>
+      `).join('');
+
+      // Content preview
+      document.getElementById('contentPreview').innerHTML = DATA.contentCalendar.slice(0, 4).map(c => `
+        <div class="flex items-center gap-3 glass-light rounded-xl p-3">
+          <div class="text-xs text-white/30 w-16">${formatDate(c.date)}</div>
+          <div class="badge badge-${c.type === 'video' ? 'in-progress' : 'planned'}">${c.type}</div>
+          <div class="text-xs text-white/60 flex-1 truncate">${c.topic}</div>
+          <div class="text-[10px] text-white/30">${c.channel}</div>
+        </div>
+      `).join('');
+
+      // Deliverables preview
+      document.getElementById('deliverablesPreview').innerHTML = DATA.deliverables.map(d => `
+        <div class="glass-light rounded-xl p-4 glass-hover cursor-pointer">
+          <div class="flex items-center justify-between mb-2">
+            <span class="badge badge-${d.status}">${d.status.replace('-', ' ')}</span>
+            ${d.date ? `<span class="text-[10px] text-white/30">${formatDate(d.date)}</span>` : ''}
+          </div>
+          <div class="text-sm font-medium text-white/90">${d.name}</div>
+          <div class="text-[11px] text-white/40 mt-1">${d.notes}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderPipeline() {
+      const stages = DATA.pipeline.stages;
+      const maxCount = Math.max(...stages.map(s => s.count), 1);
+      document.getElementById('pipelineDetail').innerHTML = stages.map((s, i) => {
+        const pct = stages[i - 1] && stages[i - 1].count > 0 ? ((s.count / stages[i - 1].count) * 100).toFixed(1) : null;
+        return `
+          <div class="glass-light rounded-xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <div class="font-semibold text-white/90">${s.name}</div>
+              <div class="text-2xl font-bold" style="color:${s.color}">${s.count}</div>
+            </div>
+            <div class="w-full bg-white/5 rounded-full h-3">
+              <div class="h-3 rounded-full transition-all duration-700" style="width:${(s.count / maxCount) * 100}%;background:${s.color}"></div>
+            </div>
+            ${pct !== null ? `<div class="text-xs text-white/30 mt-2">${pct}% conversion from ${stages[i-1].name}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+      // Chart
+      const ctx = document.getElementById('funnelChart');
+      if (ctx && ctx.getContext) {
+        new Chart(ctx.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: stages.map(s => s.name),
+            datasets: [{ data: stages.map(s => s.count), backgroundColor: stages.map(s => s.color), borderRadius: 8, borderSkipped: false }]
+          },
+          options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: 'rgba(255,255,255,0.3)', font: { family: 'Plus Jakarta Sans' } } },
+              y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Plus Jakarta Sans', weight: 500 } } }
+            }
+          }
+        });
+      }
+    }
+
+    function renderCampaigns() {
+      document.getElementById('campaignCards').innerHTML = DATA.campaigns.map(c => {
+        const glowClass = c.status === 'critical' ? 'glow-red' : c.status === 'active' ? 'glow-green' : '';
+        return `
+          <div class="glass rounded-2xl p-6 ${glowClass}">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="font-semibold text-white">${c.name}</div>
+                <div class="text-xs text-white/40 mt-0.5">${c.platform}</div>
+              </div>
+              <span class="badge badge-${c.status}">${c.status}</span>
+            </div>
+            <div class="text-xs text-white/50 mb-4 p-2 rounded-lg bg-white/5">${c.statusNote}</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="text-center">
+                <div class="text-lg font-bold text-white">${c.leads ?? '--'}</div>
+                <div class="text-[10px] text-white/30">Leads</div>
+              </div>
+              <div class="text-center">
+                <div class="text-lg font-bold text-white">${c.sent ?? '--'}</div>
+                <div class="text-[10px] text-white/30">Sent</div>
+              </div>
+              <div class="text-center">
+                <div class="text-lg font-bold text-white">${c.replied ?? '--'}</div>
+                <div class="text-[10px] text-white/30">Replied</div>
+              </div>
+              <div class="text-center">
+                <div class="text-lg font-bold text-white">${c.booked ?? '--'}</div>
+                <div class="text-[10px] text-white/30">Booked</div>
+              </div>
+            </div>
+            ${c.spend > 0 ? `<div class="mt-3 pt-3 border-t border-white/5 text-xs text-white/30">Monthly spend: $${c.spend}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderContent() {
+      const channelIcons = { Instagram: '#E4405F', LinkedIn: '#0A66C2', TikTok: '#ffffff', Facebook: '#1877F2' };
+      document.getElementById('contentCalendar').innerHTML = DATA.contentCalendar.map(c => `
+        <div class="glass-light rounded-xl p-4 flex items-center gap-4 glass-hover cursor-pointer">
+          <div class="w-14 text-center">
+            <div class="text-lg font-bold text-white">${new Date(c.date + 'T12:00:00').getDate()}</div>
+            <div class="text-[10px] text-white/30">${new Date(c.date + 'T12:00:00').toLocaleDateString('en', { weekday: 'short' })}</div>
+          </div>
+          <div class="w-2 h-2 rounded-full" style="background:${channelIcons[c.channel] || '#64748B'}"></div>
+          <div class="flex-1">
+            <div class="text-sm text-white/80">${c.topic}</div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="badge badge-${c.type === 'video' ? 'in-progress' : 'planned'}">${c.type}</span>
+              <span class="text-[10px] text-white/30">${c.channel}</span>
+            </div>
+          </div>
+          <span class="badge badge-${c.status}">${c.status}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderDeliverables() {
+      const sorted = [...DATA.deliverables].sort((a, b) => {
+        const order = { 'in-progress': 0, planned: 1, delivered: 2 };
+        return (order[a.status] ?? 3) - (order[b.status] ?? 3);
+      });
+      document.getElementById('allDeliverables').innerHTML = sorted.map(d => `
+        <div class="glass-light rounded-xl p-4 flex items-center gap-4 glass-hover cursor-pointer">
+          <div class="w-6 h-6 rounded-lg ${d.status === 'delivered' ? 'bg-accent/20' : d.status === 'in-progress' ? 'bg-purple-500/20' : 'bg-blue-500/20'} flex items-center justify-center">
+            ${d.status === 'delivered' ? '<svg width="14" height="14" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M2 7l4 4 6-7"/></svg>' : d.status === 'in-progress' ? '<svg width="14" height="14" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>' : '<svg width="14" height="14" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="7" cy="7" r="5"/></svg>'}
+          </div>
+          <div class="flex-1">
+            <div class="text-sm font-medium text-white/90">${d.name}</div>
+            <div class="text-[11px] text-white/40">${d.notes}</div>
+          </div>
+          <span class="badge badge-${d.status}">${d.status.replace('-', ' ')}</span>
+          ${d.date ? `<span class="text-[10px] text-white/30">${formatDate(d.date)}</span>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderGoals() {
+      document.getElementById('goalsWeekly').innerHTML = DATA.goals.weekly.map(g => `
+        <div class="glass-light rounded-xl p-4 flex items-center gap-3 glass-hover cursor-pointer">
+          <div class="w-5 h-5 rounded-md border ${g.status === 'completed' ? 'bg-accent/20 border-accent' : g.status === 'in-progress' ? 'bg-purple-500/20 border-purple-500' : 'border-white/10'} flex items-center justify-center flex-shrink-0">
+            ${g.status === 'completed' ? '<svg width="12" height="12" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M2 6l3 3 5-6"/></svg>' : ''}
+          </div>
+          <span class="text-sm text-white/80 flex-1">${g.goal}</span>
+          <span class="badge badge-${g.priority === 'high' ? 'critical' : g.priority === 'medium' ? 'warning' : 'planned'}">${g.priority}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('goalsMonthly').innerHTML = DATA.goals.monthly.map(g => {
+        const pct = g.target > 0 ? Math.min((g.current / g.target) * 100, 100) : 0;
+        return `
+          <div class="glass-light rounded-xl p-4">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-white/80">${g.goal}</span>
+              <span class="text-sm font-bold text-white">${g.current} / ${g.target}</span>
+            </div>
+            <div class="w-full bg-white/5 rounded-full h-2.5">
+              <div class="h-2.5 rounded-full bg-accent transition-all duration-700" style="width:${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMeetings() {
+      document.getElementById('meetingHistory').innerHTML = DATA.meetings.map(m => `
+        <div class="glass-light rounded-xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <div class="font-semibold text-white/90">${formatDate(m.date)}</div>
+            <div class="text-xs text-white/30">${m.duration}</div>
+          </div>
+          <div class="text-sm text-white/60 mb-3">${m.summary}</div>
+          <div class="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">Action Items</div>
+          <div class="space-y-1.5">
+            ${m.actionItems.map(a => `
+              <div class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 rounded-full bg-accent/60 flex-shrink-0"></div>
+                <span class="text-xs text-white/50">${a}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderBlockers() {
+      document.getElementById('allBlockers').innerHTML = DATA.blockers.map(b => {
+        const color = b.severity === 'critical' ? 'red' : b.severity === 'warning' ? 'yellow' : 'blue';
+        return `
+          <div class="glass-light rounded-xl p-5 border-l-2 border-${color}-500">
+            <div class="flex items-center justify-between mb-2">
+              <span class="badge badge-${b.severity}">${b.severity}</span>
+              <span class="text-[10px] text-white/30">Since ${formatDate(b.since)}</span>
+            </div>
+            <div class="font-semibold text-white/90 mb-1">${b.title}</div>
+            <div class="text-sm text-white/50">${b.detail}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderOnboarding() {
+      const completed = DATA.onboarding.completedSteps;
+      const pending = DATA.onboarding.pendingSteps;
+      const total = completed.length + pending.length;
+      const pct = ((completed.length / total) * 100).toFixed(0);
+
+      document.getElementById('onboardingProgress').innerHTML = `
+        <div class="text-center mb-6">
+          <div class="relative inline-block">
+            <svg width="120" height="120" class="transform -rotate-90">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#22C55E" stroke-width="8"
+                stroke-dasharray="${2 * Math.PI * 52}" stroke-dashoffset="${2 * Math.PI * 52 * (1 - pct / 100)}"
+                stroke-linecap="round" class="progress-ring"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="text-2xl font-bold text-white">${pct}%</span>
+            </div>
+          </div>
+          <div class="text-xs text-white/40 mt-2">${completed.length} of ${total} steps complete</div>
+        </div>
+        <div class="space-y-2">
+          ${completed.map(s => `
+            <div class="flex items-center gap-3 p-2 rounded-lg">
+              <svg width="18" height="18" fill="none" stroke="#22C55E" stroke-width="2.5"><circle cx="9" cy="9" r="7"/><path d="M6 9l2 2 4-4"/></svg>
+              <span class="text-sm text-white/40 line-through">${s}</span>
+            </div>
+          `).join('')}
+          ${pending.map(s => `
+            <div class="flex items-center gap-3 p-2 rounded-lg">
+              <div class="w-[18px] h-[18px] rounded-full border border-white/20"></div>
+              <span class="text-sm text-white/70">${s}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      // Client info (read-only display)
+      const c = DATA.client;
+      const infoFields = [
+        { label: 'Name', value: c.name },
+        { label: 'Company', value: c.company },
+        { label: 'Phone', value: c.phone },
+        { label: 'Email', value: c.email || 'Not provided' },
+        { label: 'Niche', value: c.niche },
+        { label: 'Model', value: c.model },
+        { label: 'Schedule', value: c.meetingSchedule },
+        { label: 'Timezone', value: c.timezone },
+        { label: 'Start Date', value: c.startDate ? formatDate(c.startDate) : '--' },
+        { label: 'Contract', value: DATA.revenue.contractMinimum },
+        { label: 'Setup Fee', value: '$' + DATA.revenue.setupFee?.toLocaleString() },
+        { label: 'Revenue Target', value: '$' + DATA.revenue.revenueTarget?.toLocaleString() + '/mo' }
+      ];
+      document.getElementById('clientInfo').innerHTML = infoFields.map(f => `
+        <div class="flex items-center justify-between py-2 border-b border-white/5">
+          <span class="text-xs text-white/40">${f.label}</span>
+          <span class="text-sm text-white/80 font-medium">${f.value || '--'}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderAPIs() {
+      const apis = Array.isArray(DATA.apis) ? DATA.apis : Object.entries(DATA.apis).map(([k, v]) => ({ id: k, label: k, color: '#64748B', ...v }));
+      document.getElementById('apiConnections').innerHTML = apis.map(a => `
+        <div class="glass-light rounded-xl p-5 glass-hover cursor-pointer">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-3 h-3 rounded-full" style="background:${a.color || '#64748B'}"></div>
+            <span class="font-semibold text-sm text-white/90">${a.label}</span>
+          </div>
+          <span class="badge badge-${a.status}">${a.status.replace('-', ' ')}</span>
+          <div class="text-xs text-white/40 mt-2">${a.note}</div>
+        </div>
+      `).join('');
+    }
+
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const page = item.dataset.page;
+        if (!page) return;
+        document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active'); n.classList.add('text-white/60'); });
+        item.classList.add('active');
+        item.classList.remove('text-white/60');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.add('active');
+        document.getElementById('pageTitle').textContent = item.textContent.trim();
+        if (window.innerWidth < 1024) toggleSidebar();
+      });
+    });
+
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebarOverlay');
+      sb.classList.toggle('open');
+      ov.classList.toggle('hidden');
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '--';
+      const d = new Date(dateStr + 'T12:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

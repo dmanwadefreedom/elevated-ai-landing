@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Before Your Call — Elevated AI Solutions</title>
+  <meta name="description" content="Everything you need to know before your strategy call with Elevated AI Solutions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            surface: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
+            accent: { DEFAULT: '#22C55E', light: '#4ADE80', dim: '#16A34A' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: #020617;
+      color: #cbd5e1;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle background mesh */
+    .gradient-mesh {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(34, 197, 94, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 80% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 70%);
+    }
+
+    /* Glass card */
+    .glass {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+    /* Typography */
+    h1, h2, h3 { color: #f8fafc; }
+    .text-accent { color: #22C55E; }
+    .text-dim { color: #64748b; }
+
+    /* Section divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.2), transparent);
+      margin: 2.5rem 0;
+    }
+
+    /* Step numbers */
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 50%;
+      background: rgba(34, 197, 94, 0.15);
+      color: #22C55E;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    /* Agent cards */
+    .agent-card {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s ease;
+    }
+    .agent-card:hover {
+      border-color: rgba(34, 197, 94, 0.2);
+    }
+
+    /* Stat block */
+    .stat-block {
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    /* Blockquote style */
+    .pull-quote {
+      border-left: 3px solid #22C55E;
+      padding-left: 1.25rem;
+      font-style: italic;
+      color: #94a3b8;
+      margin: 1.5rem 0;
+    }
+
+    /* Focus states */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #22C55E;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Print styles */
+    @media print {
+      body { background: #fff; color: #1e293b; }
+      .gradient-mesh { display: none; }
+      .glass { background: #fff; border: 1px solid #e2e8f0; backdrop-filter: none; -webkit-backdrop-filter: none; }
+      h1, h2, h3 { color: #0f172a; }
+      .text-accent { color: #16A34A; }
+      .pull-quote { color: #475569; }
+      .agent-card { background: #f8fafc; border: 1px solid #e2e8f0; }
+      .stat-block { background: #f0fdf4; border: 1px solid #bbf7d0; }
+      .section-divider { background: #e2e8f0; }
+      .step-number { background: #f0fdf4; color: #16A34A; }
+      .header-bar { background: #0f172a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="gradient-mesh"></div>
+
+<div class="relative z-10 min-h-screen">
+
+  <!-- Header -->
+  <header class="header-bar" style="background: rgba(2, 6, 23, 0.95); border-bottom: 1px solid rgba(255,255,255,0.06);">
+    <div class="max-w-2xl mx-auto px-5 py-5 flex items-center justify-between">
+      <div>
+        <h1 class="text-lg font-bold tracking-tight" style="color: #f8fafc;">ELEVATED AI</h1>
+        <p class="text-xs font-medium tracking-widest uppercase" style="color: #22C55E;">Solutions</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs font-medium" style="color: #64748b;">Pre-Call Brief</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-2xl mx-auto px-5 py-8 sm:py-12">
+
+    <!-- Section 1: Before Your Call -->
+    <section>
+      <h2 class="text-2xl sm:text-3xl font-bold mb-4" style="line-height: 1.2;">Before Your Call<span class="text-accent"> &mdash; Read This</span></h2>
+      <p class="text-base sm:text-lg mb-3">You booked a call with us. That tells us something about you already.</p>
+      <p class="text-base sm:text-lg mb-3">You're not the kind of agent who waits around for referrals and hopes the phone rings. You want a system. Something predictable.</p>
+      <p class="text-base sm:text-lg">Here's everything you need to know so we can make the most of our time together. Takes about 4 minutes to read. Worth every second.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 2: The Problem -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-5">The Problem Most Agents <span class="text-accent">Don't See</span></h2>
+
+      <p class="mb-4">Right now, <strong class="text-accent">97% of realtors</strong> are fighting over the same tiny slice of the market &mdash; the 3-7% of people actively searching for an agent.</p>
+
+      <p class="mb-4">These are the leads on Zillow. Realtor.com. HomeAdvisor. The ones filling out forms at 2am and getting called by 5, 6, sometimes 7 different agents before breakfast.</p>
+
+      <p class="mb-4">You know exactly what that looks like. Price wars. Race to the bottom. Competing on commission cuts instead of value.</p>
+
+      <p class="mb-4">Then there's the other stuff. Door knocking. Open houses. Begging past clients for referrals. Posting on social media and hoping someone in your sphere decides to sell.</p>
+
+      <p class="mb-4">Some of it works. Sometimes. But it doesn't scale. It breaks the minute you stop doing it. And it keeps you trapped on the hamster wheel.</p>
+
+      <div class="pull-quote">
+        <p>"If your pipeline depends on who you know or who calls you back, you don't have a pipeline. You have a prayer."</p>
+      </div>
+
+      <p>There's a better way. And almost nobody in real estate is doing it yet.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 3: What We Do Differently -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-5">What We Do <span class="text-accent">Differently</span></h2>
+
+      <p class="mb-4">We don't go after the 3-7%. We target the <strong class="text-accent">other 80% of the market</strong> &mdash; homeowners who are <em>open</em> to selling but aren't actively looking for a realtor.</p>
+
+      <p class="mb-4">Think about it. People don't wake up and decide to sell their house. Life happens first.</p>
+
+      <p class="mb-4">They just got married. Got divorced. Had a baby. Changed jobs. Retired. Or they're part of the <strong>silver tsunami</strong> &mdash; boomers sitting in 4-bedroom houses their kids moved out of years ago, wondering if now's the time to downsize.</p>
+
+      <p class="mb-4">These people aren't on Zillow. They're not filling out forms. They're not being contacted by 7 agents. Most of them haven't even talked to <em>one</em> agent yet.</p>
+
+      <p class="mb-4">We reach them with education-angle content. Not "Looking to sell? Call us!" &mdash; that's what everyone else does. Instead, it's things like:</p>
+
+      <div class="glass rounded-xl p-5 mb-5">
+        <p class="text-sm font-semibold text-accent mb-2">Example Ad Angles:</p>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2"><span class="text-accent mt-1">&#8226;</span> "Why 2025 might be the best year to downsize (4 reasons)"</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-1">&#8226;</span> "3 things empty nesters wish they knew before listing"</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-1">&#8226;</span> "Just had a baby? Here's why your starter home might be costing you"</li>
+        </ul>
+      </div>
+
+      <p class="mb-2">The result? When these people are ready to talk to an agent, <strong class="text-accent">you're the first and only agent they talk to.</strong></p>
+      <p>No competition. No bidding wars. No race to the bottom.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 4: How The System Works -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-6">How The System <span class="text-accent">Works</span></h2>
+
+      <div class="space-y-5">
+        <div class="flex items-start gap-4">
+          <div class="step-number mt-0.5">1</div>
+          <div>
+            <p class="font-semibold text-white mb-1">Targeted Meta ads in YOUR market</p>
+            <p class="text-sm">We run ads on Facebook and Instagram targeting problem-state homeowners in your specific area. These are people going through life transitions &mdash; not browsing Zillow.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="step-number mt-0.5">2</div>
+          <div>
+            <p class="font-semibold text-white mb-1">Education funnel, not a salesy landing page</p>
+            <p class="text-sm">They land on a page that gives them real value &mdash; information they actually want. This builds trust before they ever talk to you.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="step-number mt-0.5">3</div>
+          <div>
+            <p class="font-semibold text-white mb-1">Triple qualification filters out tire-kickers</p>
+            <p class="text-sm">Three layers of qualification make sure only serious prospects get through. Your time is too valuable for "just looking" conversations.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="step-number mt-0.5">4</div>
+          <div>
+            <p class="font-semibold text-white mb-1">6 AI agents follow up 24/7</p>
+            <p class="text-sm">Six specialized AI agents handle text and email follow-up around the clock. No leads slip through the cracks. No waiting until Monday morning.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="step-number mt-0.5">5</div>
+          <div>
+            <p class="font-semibold text-white mb-1">Qualified appointments land on YOUR calendar</p>
+            <p class="text-sm">By the time someone shows up on your calendar, they're warm, educated, and ready to talk. Not cold. Not confused. Ready.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="step-number mt-0.5">6</div>
+          <div>
+            <p class="font-semibold text-white mb-1">Your pipeline compounds &mdash; it doesn't reset</p>
+            <p class="text-sm">Old leads get re-engaged automatically every month. Most agents treat cold leads as dead. We treat them as future closings. Your pipeline grows over time instead of starting from zero each month.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 5: Why AI Changes Everything -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-5">Why AI Changes <span class="text-accent">Everything</span></h2>
+
+      <p class="mb-4">Most AI tools are like a microwave &mdash; they can do the basics, but nobody's impressed.</p>
+
+      <p class="mb-5">We don't use one AI that's mediocre at everything. <strong class="text-accent">We use 6 agents, each specifically designed for one task.</strong> Here's what they do:</p>
+
+      <div class="space-y-3 mb-6">
+        <div class="agent-card">
+          <p class="font-semibold text-white text-sm mb-1">Appointment Setting Agent</p>
+          <p class="text-sm">Gets leads off social media fast. The longer someone stays on Facebook after clicking your ad, the more likely a competitor retargets them. Our agent moves them to a booked call in minutes, not days.</p>
+        </div>
+
+        <div class="agent-card">
+          <p class="font-semibold text-white text-sm mb-1">No-Show Recovery Agent</p>
+          <p class="text-sm">Someone misses their call? Within 2 hours, this agent has already reached out and rescheduled. No manual follow-up. No awkward "hey, you missed our call" texts from you.</p>
+        </div>
+
+        <div class="agent-card">
+          <p class="font-semibold text-white text-sm mb-1">Database Reactivation Agent</p>
+          <p class="text-sm">Those old leads you thought were dead? This agent resurrects them. People who said "not now" 3 months ago might be ready today. This agent finds out &mdash; automatically.</p>
+        </div>
+
+        <div class="agent-card">
+          <p class="font-semibold text-white text-sm mb-1">Nurture &amp; Rescheduling Agent</p>
+          <p class="text-sm">Value-based follow-up, not spam. Sends relevant content, checks in at the right intervals, and keeps you top of mind without being annoying.</p>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        <p>"The biggest difference between agents who crush it and those who don't? <strong class="text-white">Speed to contact.</strong> Our AI responds in under 60 seconds."</p>
+      </div>
+
+      <p class="text-sm">While your competitors are checking their phone between showings, your AI team is already having conversations, booking appointments, and recovering no-shows. 24 hours a day. 7 days a week.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 6: The Numbers -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-5">The <span class="text-accent">Numbers</span></h2>
+
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <div class="stat-block">
+          <p class="text-2xl sm:text-3xl font-bold text-accent">3-4</p>
+          <p class="text-xs sm:text-sm mt-1 text-slate-400">Homes from $1,000-$1,500 in ad spend</p>
+        </div>
+        <div class="stat-block">
+          <p class="text-2xl sm:text-3xl font-bold text-accent">1-2</p>
+          <p class="text-xs sm:text-sm mt-1 text-slate-400">Close within 30-60 days</p>
+        </div>
+      </div>
+
+      <p class="mb-4">Your exact ROI depends on your market and your closing ability. A $200K listing is different from a $1M listing. We get that.</p>
+
+      <p class="mb-4">We're not going to sit here and promise you'll make a million dollars next month. That's not how this works.</p>
+
+      <p>What we <em>can</em> tell you: <strong class="text-accent">we fill your calendar with qualified people who are ready to have a real conversation about selling their home.</strong> What you do with those conversations is up to you.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 7: What To Expect On The Call -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-5">What To Expect <span class="text-accent">On The Call</span></h2>
+
+      <div class="glass rounded-xl p-5 sm:p-6 mb-5">
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-sm"><strong class="text-white">15-20 minutes.</strong> We respect your time.</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-sm"><strong class="text-white">We'll ask about your market</strong> &mdash; where you work, what you're doing now for leads, and your deal volume.</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <p class="text-sm"><strong class="text-white">We'll show you exactly how the system works</strong> for YOUR area. Not a generic pitch. Your market. Your numbers.</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <p class="text-sm"><strong class="text-white">If there's alignment, we get you running same day.</strong> No 6-week onboarding. No "we'll get back to you."</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <p class="text-sm"><strong class="text-white">If it's not a fit, we'll tell you honestly</strong> and give you our best advice anyway. No pressure. No games.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        <p>"No pressure. No games. If it's a fit, you'll know."</p>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Section 8: One More Thing -->
+    <section>
+      <h2 class="text-xl sm:text-2xl font-bold mb-5">One More <span class="text-accent">Thing</span></h2>
+
+      <p class="mb-4">We can't work with everyone.</p>
+
+      <p class="mb-4">We limit to a <strong class="text-accent">small number of agents per market</strong> to keep leads exclusive. That's the whole point. If we gave the same leads to 5 agents in your area, we'd be no different from Zillow.</p>
+
+      <p class="mb-6">If we're already working with someone in your market, we'll let you know upfront. No wasted time for either of us.</p>
+
+      <!-- Sign-off -->
+      <div class="glass rounded-xl p-6 sm:p-8 text-center">
+        <p class="text-lg sm:text-xl font-semibold text-white mb-2">See you on the call.</p>
+        <div class="section-divider" style="margin: 1.25rem auto; max-width: 120px;"></div>
+        <p class="text-sm font-semibold text-accent">The Elevated AI Team</p>
+        <p class="text-xs text-slate-500 mt-1">elevatedaisolutions.com</p>
+      </div>
+    </section>
+
+    <!-- Footer spacing -->
+    <div class="h-12 sm:h-16"></div>
+
+  </main>
+
+</div>
+
+</body>
+</html>
